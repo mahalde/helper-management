@@ -1,34 +1,117 @@
 <script lang="ts">
-  import { supabase } from '$lib/supabaseClient';
+	import { notifications } from '$lib/stores';
+	import { supabase } from '$lib/supabaseClient';
+	import Icon from '$lib/ui/Icon.svelte';
+	import { apple, facebook, google } from '$lib/ui/icons';
+	import type { Provider } from '@supabase/supabase-js';
+	import { _ } from 'svelte-i18n';
 
-  let loading = false;
-  let email: string;
+	const providers: Provider[] = ['google'];
 
-  const handleLogin = async () => {
-    try {
-      loading = true;
-      const { error } = await supabase.auth.signInWithOtp({ email });
-      if (error) throw error;
-      alert('Check your email for the login link!');
-    } catch (error) {
-      if (error instanceof Error) {
-        alert(error.message);
-      }
-    } finally {
-      loading = false;
-    }
+	const iconMap: Record<string, { icon: string; viewBoxHeight: number; viewBoxWidth: number }> = {
+		google: {
+			icon: google,
+			viewBoxWidth: 488,
+			viewBoxHeight: 512
+		},
+		facebook: {
+			icon: facebook,
+			viewBoxWidth: 488,
+			viewBoxHeight: 512
+		},
+		apple: {
+			icon: apple,
+			viewBoxWidth: 512,
+			viewBoxHeight: 512
+		}
+	};
+
+	let loading = false;
+  let type: 'login' | 'register' = 'login';
+
+  function toggleType() {
+    type = type === 'login' ? 'register' : 'login';
   }
+
+	async function handleProviderSignIn(provider: Provider) {
+    loading = true;
+
+		const { error } = await supabase.auth.signInWithOAuth({ provider });
+		if (error) {
+			notifications.error(error.message, 5000);
+		}
+
+		loading = false;
+	}
 </script>
 
-<form class="row flex-center flex" on:submit|preventDefault="{handleLogin}">
-  <div class="col-6 form-widget">
-    <h1 class="header">Supabase + SvelteKit</h1>
-    <p class="description">Sign in via magic link with your email below</p>
-    <div>
-      <input type="email" class="inputField" placeholder="Your email" bind:value="{email}" />
-    </div>
-    <div>
-      <input type="submit" class="button block" value={loading ? 'Loading' : 'Send magic link'} disabled={loading} />
-    </div>
-  </div>
-</form>
+<div class="flex max-h-full items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
+	<div class="w-full max-w-md space-y-8">
+		<div>
+			<img class="mx-auto h-24 w-auto" src="logo.png" alt="Reiterverein Höven e.V." />
+			<h2
+				class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-300"
+			>
+				{$_('page.auth.headline')}
+			</h2>
+			<p class="mt-2 text-center text-sm">
+				<button type="button" on:click={toggleType} class="btn text-primary-500">{$_('page.auth.not_registered')}</button>
+			</p>
+		</div>
+		<form
+			class="mt-8 space-y-6 bg-white dark:bg-gray-900 shadow-md p-8 rounded-lg"
+			method="POST"
+      action="?/{type}"
+		>
+			<div class="mb-2">
+				<label class="label">
+          <span>{$_('label.email')}</span>
+          <input
+					id="email-address"
+					name="email"
+					type="email"
+					autocomplete="email"
+					required
+					placeholder="max.mustermann@beispiel.de"
+					class="input"
+				/>
+        </label>
+				
+			</div>
+			<div>
+				<label for="password" class="label text-gray-800">{$_('label.password')}</label>
+				<input
+					id="password"
+					name="password"
+					type="password"
+					autocomplete="current-password"
+					required
+					class="input"
+				/>
+			</div>
+			<button type="submit" disabled={loading} class="btn variant-filled-primary w-full" color="primary"
+				>{$_('page.auth.log_in')}</button
+			>
+			<hr class="mt-2" />
+			<span class="text-gray-400 font-light text-sm">{$_('page.auth.alternative_login')}</span>
+			<div class="flex justify-around gap-4">
+				{#each providers as provider}
+					<button
+            type="button"
+						color="alternative"
+						disabled={loading}
+						on:click={() => handleProviderSignIn(provider)}
+						class="btn variant-ringed-primary gap-2 w-full"
+					>
+						<Icon
+							fill={true}
+							icon={iconMap[provider].icon}
+							viewBoxWidth={iconMap[provider].viewBoxWidth}
+							viewBoxHeight={iconMap[provider].viewBoxHeight}
+						/>
+					</button>
+				{/each}
+			</div>
+		</form>
+	</div>
+</div>

@@ -20,16 +20,16 @@
 			loading = true;
 			const { user } = session;
 
-			const { data, error, status } = await supabase
+			const { data: userData, error, status } = await supabase
 				.from('profiles')
 				.select(`username, website, avatar_url`)
 				.eq('id', user.id)
 				.single();
 
-			if (data) {
-				username = data.username;
-				website = data.website;
-				avatarUrl = data.avatar_url;
+			if (userData) {
+				username = userData.username;
+				website = userData.website;
+				avatarUrl = userData.avatar_url;
 			}
 
 			if (error && status !== 406) throw error;

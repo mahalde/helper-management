@@ -1,0 +1,14 @@
+{
+  "label": {
+    "email": "E-Mail-Adresse",
+    "password": "Passwort"
+  },
+  "page": {
+    "auth": {
+      "headline": "Helfereinteilung Turnier 2023",
+      "not_registered": "Noch nicht registriert?",
+      "log_in": "Einloggen",
+      "alternative_login": "oder alternativ mit"
+    }
+  }
+}

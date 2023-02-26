@@ -1,0 +1,14 @@
+{
+  "label": {
+    "email": "E-Mail address",
+    "password": "Password"
+  },
+  "page": {
+    "auth": {
+      "headline": "Helper management 2023",
+      "not_registered": "Not registered yet?",
+      "log_in": "Log In",
+      "alternative_login": "or continue with"
+    }
+  }
+}

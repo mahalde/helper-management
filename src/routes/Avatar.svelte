@@ -58,13 +58,13 @@
 </script>
 
 <div>
-  {#if avatarUrl} <img src={avatarUrl} alt={avatarUrl ? 'Avatar' : 'No image'} class="avatar image"
+  {#if avatarUrl} <img src={avatarUrl} alt={avatarUrl ? 'Avatar' : 'No image'}
   style="height: {size}em; width: {size}em;" /> {:else}
-  <div class="avatar no-image" style="height: {size}em; width: {size}em;" />
+  <div style="height: {size}em; width: {size}em;"></div>
   {/if}
 
   <div style="width: {size}em;">
-    <label for="single" class="button primary block">
+    <label for="single" class="btn">
       {uploading ? 'Uploading...' : 'Upload'}
     </label>
     <input
