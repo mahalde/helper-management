@@ -2,7 +2,6 @@
 	import { supabase } from '$lib/supabaseClient';
 	import { createEventDispatcher } from 'svelte';
 
-
   export let size = 10;
   export let url: string;
 
@@ -13,6 +12,12 @@
   const dispatch = createEventDispatcher();
 
   const downloadImage = async (path: string) => {
+    try {
+      new URL(path);
+      avatarUrl = path;
+      return;
+    } catch (ignore) {}
+
     try {
       const { data, error } = await supabase.storage.from('avatars').download(path);
 

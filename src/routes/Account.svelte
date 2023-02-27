@@ -7,8 +7,7 @@
 	export let session: AuthSession;
 
 	let loading = false;
-	let username: string | null = null;
-	let website: string | null = null;
+	let full_name: string | null = null;
 	let avatarUrl: string | null = null;
 
 	onMount(() => {
@@ -22,13 +21,12 @@
 
 			const { data: userData, error, status } = await supabase
 				.from('profiles')
-				.select(`username, website, avatar_url`)
+				.select(`full_name, avatar_url`)
 				.eq('id', user.id)
 				.single();
 
 			if (userData) {
-				username = userData.username;
-				website = userData.website;
+				full_name = userData.full_name;
 				avatarUrl = userData.avatar_url;
 			}
 
@@ -49,8 +47,7 @@
 
 			const updates = {
 				id: user.id,
-				username,
-				website,
+				full_name,
 				avatar_url: avatarUrl,
 				updated_at: new Date()
 			};
@@ -90,11 +87,7 @@
 	</div>
 	<div>
 		<label for="username">Name</label>
-		<input type="text" id="username" bind:value={username} />
-	</div>
-	<div>
-		<label for="website">Website</label>
-		<input type="text" id="website" bind:value={website} />
+		<input type="text" id="username" bind:value={full_name} />
 	</div>
 
 	<div>
