@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import { notifications } from '$lib/stores';
 	import { supabase } from '$lib/supabaseClient';
 	import Icon from '$lib/ui/Icon.svelte';
@@ -36,7 +37,7 @@
 	async function handleProviderSignIn(provider: Provider) {
     loading = true;
 
-		const { error } = await supabase.auth.signInWithOAuth({ provider });
+		const { error } = await supabase.auth.signInWithOAuth({ provider, options: {redirectTo: dev ? 'http://localhost:5173' : undefined}});
 		if (error) {
 			notifications.error(error.message, 5000);
 		}
@@ -93,7 +94,7 @@
 				>{$_('page.auth.log_in')}</button
 			>
 			<hr class="mt-2" />
-			<span class="text-gray-400 font-light text-sm">{$_('page.auth.alternative_login')}</span>
+			<div class="text-gray-400 text-center font-light text-sm">{$_('page.auth.alternative_login')}</div>
 			<div class="flex justify-around gap-4">
 				{#each providers as provider}
 					<button
@@ -103,12 +104,15 @@
 						on:click={() => handleProviderSignIn(provider)}
 						class="btn variant-ringed-primary gap-2 w-full"
 					>
-						<Icon
-							fill={true}
-							icon={iconMap[provider].icon}
-							viewBoxWidth={iconMap[provider].viewBoxWidth}
-							viewBoxHeight={iconMap[provider].viewBoxHeight}
-						/>
+						<span>
+              <Icon
+                fill={true}
+                icon={iconMap[provider].icon}
+                viewBoxWidth={iconMap[provider].viewBoxWidth}
+                viewBoxHeight={iconMap[provider].viewBoxHeight}
+              />
+            </span>
+            <span>{provider.toUpperCase()}</span>
 					</button>
 				{/each}
 			</div>
