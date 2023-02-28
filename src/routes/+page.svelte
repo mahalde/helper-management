@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import Account from './Account.svelte';
 	import Auth from './Auth.svelte';
+	import Dashboard from './Dashboard.svelte';
 
   export let data: PageData;
 </script>
@@ -14,5 +14,5 @@
 {#if !data.session}
   <Auth />
 {:else}
-  <Account session={data.session} />
+  <Dashboard session={data.session} />
 {/if}

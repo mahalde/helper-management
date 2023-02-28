@@ -1,7 +1,11 @@
 {
   "label": {
+    "assigned_helpers": "Eingeteilte Helfer",
+    "catering": "Catering",
+    "dressage": "Dressur",
     "email": "E-Mail-Adresse",
-    "password": "Passwort"
+    "password": "Passwort",
+    "showjumping": "Springen"
   },
   "page": {
     "auth": {
@@ -9,6 +13,11 @@
       "not_registered": "Noch nicht registriert?",
       "log_in": "Einloggen",
       "alternative_login": "oder alternativ mit"
+    },
+    "dashboard": {
+      "your_times": "Deine Arbeitszeiten",
+      "no_times": "Keine Zeiten ausgewählt",
+      "all_times": "Alle Arbeitszeiten"
     }
   }
 }

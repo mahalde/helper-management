@@ -1,7 +1,11 @@
 {
   "label": {
+    "assigned_helpers": "Assigned helpers",
+    "catering": "Catering",
+    "dressage": "Dressage",
     "email": "E-Mail address",
-    "password": "Password"
+    "password": "Password",
+    "showjumping": "Showjumping"
   },
   "page": {
     "auth": {
@@ -9,6 +13,11 @@
       "not_registered": "Not registered yet?",
       "log_in": "Log In",
       "alternative_login": "or continue with"
+    },
+    "dashboard": {
+      "your_times": "Your timeslots",
+      "no_times": "No timeslots chosen",
+      "all_times": "All timeslots"
     }
   }
 }

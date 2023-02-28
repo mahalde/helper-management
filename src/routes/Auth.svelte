@@ -46,7 +46,7 @@
 	}
 </script>
 
-<div class="flex max-h-full items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
+<div class="flex max-h-full items-center justify-center p-4 sm:px-6 lg:px-8">
 	<div class="w-full max-w-md space-y-8">
 		<div>
 			<img class="mx-auto h-24 w-auto" src="logo.png" alt="Reiterverein Höven e.V." />
