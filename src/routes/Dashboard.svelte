@@ -36,7 +36,7 @@
 <div class="m-4">
   <h4 class="dark:text-white">{$_('page.dashboard.your_times')}</h4>
   {#if yourSlots?.length}
-    <div class="flex flex-col max-w-fit gap-2">
+    <div class="flex flex-col max-w-fit gap-4">
       {#each yourSlots as slot (slot.id)}
         <UISlot {slot} withHelpers={false} />
       {/each}
@@ -45,7 +45,7 @@
     <p class="dark:text-white">{$_('page.dashboard.no_times')}</p>
   {/if}
   <h4 class="mt-4 mb-2 dark:text-white">{$_('page.dashboard.all_times')}</h4>
-  <div class="flex flex-col max-w-fit gap-2">
+  <div class="flex flex-col max-w-fit gap-4">
     {#each allSlots as slot (slot.id)}
       <UISlot {slot} />
     {/each}

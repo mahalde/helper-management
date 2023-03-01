@@ -3,17 +3,21 @@
 	import { notifications } from '$lib/stores';
 	import { supabase } from '$lib/supabaseClient';
 	import Alert from '$lib/ui/Alert.svelte';
+	import { arrow, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
+	import { storePopup } from '@skeletonlabs/skeleton';
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import '../app.css';
 	import '../theme.css';
 
+	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+
 	onMount(() => {
 		const {
 			data: { subscription }
 		} = supabase.auth.onAuthStateChange(() => {
-      invalidate('supabase:auth');
+			invalidate('supabase:auth');
 		});
 
 		return () => {

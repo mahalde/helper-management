@@ -19,5 +19,9 @@
       "no_times": "Keine Zeiten ausgewählt",
       "all_times": "Alle Arbeitszeiten"
     }
+  },
+  "popup": {
+    "log_out": "Ausloggen",
+    "profile": "Profil"
   }
 }

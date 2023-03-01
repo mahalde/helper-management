@@ -19,5 +19,9 @@
       "no_times": "No timeslots chosen",
       "all_times": "All timeslots"
     }
+  },
+  "popup": {
+    "log_out": "Log out",
+    "profile": "User profile"
   }
 }

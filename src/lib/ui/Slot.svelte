@@ -37,7 +37,7 @@
 	}
 </script>
 
-<div class="border border-gray-300 rounded-md flex flex-col p-2">
+<div class="border border-gray-300 rounded-md flex flex-col p-2 shadow-sm">
 	<div class="flex items-center text-gray-500 dark:text-gray-300 gap-2">
 		<Icon
 			icon={iconMap[slot.category]}
