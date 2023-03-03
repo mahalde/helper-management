@@ -55,6 +55,7 @@
 {/if}
 
 <div data-popup="userPopup" class="card variant-ringed-primary bg-white">
+	<div class="arrow bg-white" />
 	<nav class="list-nav">
 		<ul>
 			<li>

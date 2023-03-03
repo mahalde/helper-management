@@ -2,6 +2,7 @@
   "label": {
     "assigned_helpers": "Assigned helpers",
     "catering": "Catering",
+		"confirm_password": "Confirm password",
     "dressage": "Dressage",
     "email": "E-Mail address",
     "password": "Password",
@@ -9,10 +10,12 @@
   },
   "page": {
     "auth": {
+			"already_registered": "Already registered? Click here to log in",
+      "alternative_login": "or continue with",
       "headline": "Helper management 2023",
-      "not_registered": "Not registered yet?",
       "log_in": "Log In",
-      "alternative_login": "or continue with"
+      "not_registered": "Not registered yet? Click here to register",
+			"register": "Register"
     },
     "dashboard": {
       "your_times": "Your timeslots",

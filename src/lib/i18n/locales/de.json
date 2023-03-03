@@ -2,6 +2,7 @@
   "label": {
     "assigned_helpers": "Eingeteilte Helfer",
     "catering": "Catering",
+		"confirm_password": "Passwort bestätigen",
     "dressage": "Dressur",
     "email": "E-Mail-Adresse",
     "password": "Passwort",
@@ -9,10 +10,12 @@
   },
   "page": {
     "auth": {
+			"already_registered": "Bereits registriert? Dann log hier dich ein",
+      "alternative_login": "oder alternativ mit",
       "headline": "Helfereinteilung Turnier 2023",
-      "not_registered": "Noch nicht registriert?",
       "log_in": "Einloggen",
-      "alternative_login": "oder alternativ mit"
+      "not_registered": "Noch nicht registriert? Dann melde dich hier an",
+			"register": "Registrieren"
     },
     "dashboard": {
       "your_times": "Deine Arbeitszeiten",

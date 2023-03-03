@@ -40,6 +40,7 @@
 		"@supabase/auth-helpers-sveltekit": "^0.8.7",
 		"@supabase/supabase-js": "^2.7.1",
 		"date-fns": "^2.29.3",
-		"svelte-i18n": "^3.6.0"
+		"svelte-i18n": "^3.6.0",
+		"zod": "^3.20.6"
 	}
 }
