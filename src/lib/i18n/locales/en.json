@@ -1,30 +1,38 @@
 {
-  "label": {
-    "assigned_helpers": "Assigned helpers",
-    "catering": "Catering",
+	"errors": {
+		"email": "Not a valid email",
+		"invalid_credentials": "Invalid credentials",
+		"password": "Password must have at least 6 characters",
+		"password_mismatch": "Passwords do not match",
+		"server_general": "Unknown server error. Please try again"
+	},
+	"label": {
+		"assigned_helpers": "Assigned helpers",
+		"catering": "Catering",
 		"confirm_password": "Confirm password",
-    "dressage": "Dressage",
-    "email": "E-Mail address",
-    "password": "Password",
-    "showjumping": "Showjumping"
-  },
-  "page": {
-    "auth": {
+		"dressage": "Dressage",
+		"email": "E-Mail address",
+		"log_out": "Log out",
+		"password": "Password",
+		"showjumping": "Showjumping"
+	},
+	"page": {
+		"auth": {
 			"already_registered": "Already registered? Click here to log in",
-      "alternative_login": "or continue with",
-      "headline": "Helper management 2023",
-      "log_in": "Log In",
-      "not_registered": "Not registered yet? Click here to register",
+			"alternative_login": "or continue with",
+			"headline": "Helper management 2023",
+			"log_in": "Log In",
+			"not_registered": "Not registered yet? Click here to register",
 			"register": "Register"
-    },
-    "dashboard": {
-      "your_times": "Your timeslots",
-      "no_times": "No timeslots chosen",
-      "all_times": "All timeslots"
-    }
-  },
-  "popup": {
-    "log_out": "Log out",
-    "profile": "User profile"
-  }
+		},
+		"dashboard": {
+			"your_times": "Your timeslots",
+			"no_times": "No timeslots chosen",
+			"all_times": "All timeslots"
+		}
+	},
+	"popup": {
+		"log_out": "Log out",
+		"profile": "User profile"
+	}
 }

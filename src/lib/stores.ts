@@ -1,5 +1,5 @@
 import { writable, derived } from 'svelte/store';
-import type { NotificationType } from '../app';
+import type { NotificationType } from './types';
 
 interface Notification {
   id: string;
@@ -8,7 +8,7 @@ interface Notification {
   timeout?: number;
 }
 
-const DEFAULT_TIMEOUT = 3000;
+const DEFAULT_TIMEOUT = 5000;
 
 function createNotificationStore() {
   const _notifications = writable<Notification[]>([]);

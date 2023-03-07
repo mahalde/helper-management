@@ -1,30 +1,34 @@
 {
-  "label": {
-    "assigned_helpers": "Eingeteilte Helfer",
-    "catering": "Catering",
+	"errors": {
+		"email": "Keine gültige E-Mail-Adresse",
+		"invalid_credentials": "Ungültige Zugangsdaten",
+		"password": "Passwort muss mindestens 6 Zeichen haben",
+		"password_mismatch": "Passwörter stimmen nicht überein",
+		"server_general": "Unbekannter Serverfehler. Bitte versuche es noch einmal"
+	},
+	"label": {
+		"assigned_helpers": "Eingeteilte Helfer",
+		"catering": "Catering",
 		"confirm_password": "Passwort bestätigen",
-    "dressage": "Dressur",
-    "email": "E-Mail-Adresse",
-    "password": "Passwort",
-    "showjumping": "Springen"
-  },
-  "page": {
-    "auth": {
+		"dressage": "Dressur",
+		"email": "E-Mail-Adresse",
+		"log_out": "Ausloggen",
+		"password": "Passwort",
+		"showjumping": "Springen"
+	},
+	"page": {
+		"auth": {
 			"already_registered": "Bereits registriert? Dann log hier dich ein",
-      "alternative_login": "oder alternativ mit",
-      "headline": "Helfereinteilung Turnier 2023",
-      "log_in": "Einloggen",
-      "not_registered": "Noch nicht registriert? Dann melde dich hier an",
+			"alternative_login": "oder alternativ mit",
+			"headline": "Helfereinteilung Turnier 2023",
+			"log_in": "Einloggen",
+			"not_registered": "Noch nicht registriert? Dann melde dich hier an",
 			"register": "Registrieren"
-    },
-    "dashboard": {
-      "your_times": "Deine Arbeitszeiten",
-      "no_times": "Keine Zeiten ausgewählt",
-      "all_times": "Alle Arbeitszeiten"
-    }
-  },
-  "popup": {
-    "log_out": "Ausloggen",
-    "profile": "Profil"
-  }
+		},
+		"dashboard": {
+			"your_times": "Deine Arbeitszeiten",
+			"no_times": "Keine Zeiten ausgewählt",
+			"all_times": "Alle Arbeitszeiten"
+		}
+	}
 }

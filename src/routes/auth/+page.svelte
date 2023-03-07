@@ -1,15 +1,21 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance, type SubmitFunction } from '$app/forms';
+	import { invalidate } from '$app/navigation';
 	import { notifications } from '$lib/stores';
-	import { supabase } from '$lib/supabaseClient';
 	import Icon from '$lib/ui/Icon.svelte';
 	import { apple, facebook, google } from '$lib/ui/icons';
+	import InputError from '$lib/ui/InputError.svelte';
 	import type { Provider } from '@supabase/supabase-js';
 	import { _ } from 'svelte-i18n';
-	import type { ActionData } from './$types';
+	import type { ActionData, PageData } from './$types';
 
+	export let data: PageData;
 	export let form: ActionData;
+
+	$: if (form?.generalError) {
+		notifications.error($_(form.generalError));
+	}
 
 	const providers: Provider[] = ['google'];
 
@@ -38,20 +44,33 @@
 		type = type === 'login' ? 'register' : 'login';
 	}
 
+	const handleSubmit: SubmitFunction = () => {
+		loading = true;
+		return async ({ result }) => {
+			if (result.type === 'redirect') {
+				await invalidate('supabase:auth');
+			} else {
+				await applyAction(result);
+			}
+			loading = false;
+		};
+	};
+
 	async function handleProviderSignIn(provider: Provider) {
 		loading = true;
 
-		const { error } = await supabase.auth.signInWithOAuth({
+		const { error } = await data.supabase.auth.signInWithOAuth({
 			provider,
 			options: { redirectTo: dev ? 'http://localhost:5173' : undefined }
 		});
 		if (error) {
-			notifications.error(error.message, 5000);
+			notifications.error(error.message);
 		}
 
 		loading = false;
 	}
 </script>
+
 <div class="flex max-h-full items-center justify-center p-4 sm:px-6 lg:px-8">
 	<div class="w-full max-w-md space-y-8">
 		<div>
@@ -67,17 +86,20 @@
 				</button>
 			</p>
 		</div>
-		<div class="mt-8 space-y-6 bg-white dark:bg-gray-900 shadow-md p-8 rounded-lg">
-			<form use:enhance method="POST" action="?/{type}" class="flex flex-col gap-6">
+		<div class="mt-4 space-y-6 bg-white dark:bg-gray-900 shadow-md p-8 rounded-lg">
+			<form use:enhance={handleSubmit} method="POST" action="?/{type}" class="flex flex-col gap-6">
 				<label class="label">
 					<span>{$_('label.email')}</span>
 					<input
 						name="email"
 						type="email"
+						value={form?.values?.email ?? ''}
 						autocomplete="email"
 						required
 						class="input"
+						class:input-error={form?.errors?.email}
 					/>
+					<InputError errors={form?.errors?.email} />
 				</label>
 				<label class="label">
 					<span>{$_('label.password')}</span>
@@ -86,7 +108,9 @@
 						type="password"
 						autocomplete="current-password"
 						class="input"
+						class:input-error={form?.errors?.password}
 					/>
+					<InputError errors={form?.errors?.password} />
 				</label>
 				{#if type === 'register'}
 					<label class="label">
@@ -97,7 +121,9 @@
 							autocomplete={null}
 							required
 							class="input"
+							class:input-error={form?.errors?.confirm_password}
 						/>
+						<InputError errors={form?.errors?.confirm_password} />
 					</label>
 				{/if}
 				<button
@@ -116,10 +142,8 @@
 			<div class="flex justify-around gap-4">
 				{#each providers as provider}
 					<button
-						type="button"
-						color="alternative"
-						disabled={loading}
 						on:click={() => handleProviderSignIn(provider)}
+						disabled={loading}
 						class="btn variant-ringed-primary gap-2 w-full"
 					>
 						<span>

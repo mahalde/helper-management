@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { supabase } from '$lib/supabaseClient';
+	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { createEventDispatcher } from 'svelte';
 
   export let size = 10;
   export let url: string;
+	export let supabase: SupabaseClient;
 
   let avatarUrl: string | null = null;
   let uploading = false;
