@@ -22,9 +22,9 @@
 	};
 </script>
 
-<AppBar slotTrail="justify-end" background="bg-secondary-500" shadow="shadow-md">
-	<h2 class="text-white">Helfereinteilung</h2>
-	<div slot="trail" class="flex gap-2">
+<AppBar slotTrail="justify-end" background="bg-secondary-500" shadow="shadow-md" padding="p-4 pr-2">
+	<h2 class="text-white">Helfereinteilung 2023</h2>
+	<div slot="trail" class="flex gap-4">
 		<Icon
 			class="cursor-pointer"
 			color="white"

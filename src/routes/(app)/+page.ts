@@ -1,7 +1,8 @@
 import type { Slot } from '$lib/types';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async ({ parent }) => {
+export const load: PageLoad = async ({ parent, depends}) => {
+	depends('helpermanagement:slots');
 	const { supabase } = await parent();
 
 	const { data: rawSlots } = await supabase.from('slots_with_helpers').select<'*', Slot>('*');

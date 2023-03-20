@@ -4,17 +4,26 @@
 		"invalid_credentials": "Ungültige Zugangsdaten",
 		"password": "Passwort muss mindestens 6 Zeichen haben",
 		"password_mismatch": "Passwörter stimmen nicht überein",
-		"server_general": "Unbekannter Serverfehler. Bitte versuche es noch einmal"
+		"server_general": "Unbekannter Serverfehler. Bitte versuche es noch einmal",
+		"unauthorized": "Nicht autorisiert. Bitte logge dich ein"
 	},
 	"label": {
+		"add_helper": "Als Helfer eintragen",
 		"assigned_helpers": "Eingeteilte Helfer",
+		"category": "Kategorie",
 		"catering": "Catering",
 		"confirm_password": "Passwort bestätigen",
+		"date.asc": "Datum (aufsteigend)",
+		"date.desc": "Datum (absteigend)",
 		"dressage": "Dressur",
 		"email": "E-Mail-Adresse",
+		"helpers_needed": "Noch benötigte Helfer",
 		"log_out": "Ausloggen",
+		"num_of_helpers_needed": "Noch {num} benötigte Helfer",
 		"password": "Passwort",
-		"showjumping": "Springen"
+		"remove_helper": "Als Helfer entfernen",
+		"showjumping": "Springen",
+		"sort_by": "Sortieren nach"
 	},
 	"page": {
 		"auth": {

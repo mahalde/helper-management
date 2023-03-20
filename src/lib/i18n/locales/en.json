@@ -4,17 +4,26 @@
 		"invalid_credentials": "Invalid credentials",
 		"password": "Password must have at least 6 characters",
 		"password_mismatch": "Passwords do not match",
-		"server_general": "Unknown server error. Please try again"
+		"server_general": "Unknown server error. Please try again",
+		"unauthorized": "Unauthorized access. Please log in"
 	},
 	"label": {
+		"add_helper": "Sign up as helper",
 		"assigned_helpers": "Assigned helpers",
+		"category": "Category",
 		"catering": "Catering",
 		"confirm_password": "Confirm password",
+		"date.asc": "Date (ascending)",
+		"date.desc": "Date (descending)",
 		"dressage": "Dressage",
 		"email": "E-Mail address",
+		"helpers_needed": "Helpers needed",
 		"log_out": "Log out",
+		"num_of_helpers_needed": "Still {num} helper(s) needed",
 		"password": "Password",
-		"showjumping": "Showjumping"
+		"remove_helper": "Remove as helper",
+		"showjumping": "Showjumping",
+		"sort_by": "Sort by"
 	},
 	"page": {
 		"auth": {

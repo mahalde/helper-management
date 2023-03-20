@@ -17,7 +17,7 @@ const registerSchema = loginSchema.extend({
 			path: ['confirm_password']
 		});
 	}
-})
+});
 
 export const actions: Actions = {
 	async login({ request, locals: { supabase } }) {

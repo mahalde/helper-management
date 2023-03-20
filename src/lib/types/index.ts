@@ -23,3 +23,12 @@ export const Slot = z.object({
 	helpers: z.array(Helper),
 });
 export type Slot = z.infer<typeof Slot>;
+
+export type SortOption = {
+	type: 'date',
+	label: string
+	sort?: string,
+} | {
+	type: 'category' | 'helpers_needed',
+	label: string
+};
