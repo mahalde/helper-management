@@ -23,16 +23,19 @@
 </script>
 
 <AppBar slotTrail="justify-end" background="bg-secondary-500" shadow="shadow-md" padding="p-4 pr-2">
-	<h2 class="text-white">Helfereinteilung 2023</h2>
+	<a href="/">
+		<h2 class="text-white">{$_('layout.headline')}</h2>
+	</a>
 	<div slot="trail" class="flex gap-4">
-		<Icon
-			class="cursor-pointer"
-			color="white"
-			icon={user_circle}
-			viewBoxHeight={24}
-			viewBoxWidth={24}
-			size={36}
-		/>
+		<a href="/profile">
+			<Icon
+				color="white"
+				icon={user_circle}
+				viewBoxHeight={24}
+				viewBoxWidth={24}
+				size={36}
+			/>
+		</a>
 		<form action="/logout" method="POST" use:enhance={handleLogout}>
 			<button class="btn btn-sm variant-ghost-primary justify-between text-white" type="submit">
 				<Icon

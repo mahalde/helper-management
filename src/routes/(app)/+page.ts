@@ -1,7 +1,7 @@
 import type { Slot } from '$lib/types';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async ({ parent, depends}) => {
+export const load: PageLoad = async ({ parent, depends }) => {
 	depends('helpermanagement:slots');
 	const { supabase } = await parent();
 

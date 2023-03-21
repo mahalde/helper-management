@@ -4,6 +4,7 @@
 		"invalid_credentials": "Ungültige Zugangsdaten",
 		"password": "Passwort muss mindestens 6 Zeichen haben",
 		"password_mismatch": "Passwörter stimmen nicht überein",
+		"required": "Muss angegeben werden",
 		"server_general": "Unbekannter Serverfehler. Bitte versuche es noch einmal",
 		"unauthorized": "Nicht autorisiert. Bitte logge dich ein"
 	},
@@ -19,11 +20,22 @@
 		"email": "E-Mail-Adresse",
 		"helpers_needed": "Noch benötigte Helfer",
 		"log_out": "Ausloggen",
+		"name": "Name",
 		"num_of_helpers_needed": "Noch {num} benötigte Helfer",
 		"password": "Passwort",
+		"phone": "Telefonnummer",
 		"remove_helper": "Als Helfer entfernen",
+		"save": "Speichern",
 		"showjumping": "Springen",
 		"sort_by": "Sortieren nach"
+	},
+	"layout": {
+		"headline": "Helfereinteilung 2023"
+	},
+	"notification": {
+		"success": {
+			"changes_saved": "Änderungen gespeichert"
+		}
 	},
 	"page": {
 		"auth": {
@@ -38,6 +50,13 @@
 			"your_times": "Deine Arbeitszeiten",
 			"no_times": "Keine Zeiten ausgewählt",
 			"all_times": "Alle Arbeitszeiten"
+		},
+		"first_visit": {
+			"header": "Willkommen bei der Helfereinteilung für die Turniere 2023 des Reiterverein Höven.",
+			"text": "Bitte gib hier deinen Namen und deine Telefonnummer an, damit dich die Organisatoren kontaktieren können."
+		},
+		"profile": {
+			"headline": "Deine Daten"
 		}
 	}
 }

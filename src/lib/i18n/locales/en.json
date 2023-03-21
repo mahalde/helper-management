@@ -4,6 +4,7 @@
 		"invalid_credentials": "Invalid credentials",
 		"password": "Password must have at least 6 characters",
 		"password_mismatch": "Passwords do not match",
+		"required": "Required",
 		"server_general": "Unknown server error. Please try again",
 		"unauthorized": "Unauthorized access. Please log in"
 	},
@@ -19,11 +20,22 @@
 		"email": "E-Mail address",
 		"helpers_needed": "Helpers needed",
 		"log_out": "Log out",
+		"name": "Full name",
 		"num_of_helpers_needed": "Still {num} helper(s) needed",
 		"password": "Password",
+		"phone": "Phone number",
 		"remove_helper": "Remove as helper",
+		"save": "Save data",
 		"showjumping": "Showjumping",
 		"sort_by": "Sort by"
+	},
+	"layout": {
+		"headline": "Helper management 2023"
+	},
+	"notification": {
+		"success": {
+			"changes_saved": "Saved changes"
+		}
 	},
 	"page": {
 		"auth": {
@@ -38,10 +50,13 @@
 			"your_times": "Your timeslots",
 			"no_times": "No timeslots chosen",
 			"all_times": "All timeslots"
+		},
+		"first_visit": {
+			"header": "Welcome to the helper management for the 2023 tournaments of the Riding Club Höven.",
+			"text": "Please enter your name and phone number so the organisers can contact you."
+		},
+		"profile": {
+			"headline": "Your data"
 		}
-	},
-	"popup": {
-		"log_out": "Log out",
-		"profile": "User profile"
 	}
 }

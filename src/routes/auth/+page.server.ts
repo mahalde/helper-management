@@ -1,6 +1,7 @@
 import { AuthApiError } from '@supabase/supabase-js';
-import { fail, redirect, type Actions } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
+import type { Actions } from './$types';
 
 const loginSchema = z.object({
 	email: z.string().trim().email('errors.email'),
@@ -28,7 +29,6 @@ export const actions: Actions = {
 			const errors = result.error.flatten().fieldErrors;
 			return fail(400, { errors, values: { email: formData.get('email') } });
 		}
-
 
 		const { error } = await supabase.auth.signInWithPassword({
 			email: result.data.email,

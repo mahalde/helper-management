@@ -130,7 +130,6 @@
 					type="submit"
 					disabled={loading}
 					class="btn variant-filled-primary w-full"
-					color="primary"
 				>
 					{$_(`page.auth.${type === 'login' ? 'log_in' : 'register'}`)}
 				</button>
