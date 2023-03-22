@@ -57,6 +57,8 @@
 			"no_times_chosen": "No timeslots chosen"
 		},
 		"first_visit": {
+			"confirm_disclaimer": "I agree to the use of the data",
+			"disclaimer": "Your data will be used to show other participants and the organisers who has already signed up for the work that needs to be done. Your telephone number is only visible to the organisers so that they can contact you.",
 			"header": "Welcome to the helper management for the 2023 tournaments of the Riding Club Höven.",
 			"text": "Please enter your name and phone number so the organisers can contact you."
 		},

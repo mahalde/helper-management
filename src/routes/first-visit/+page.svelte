@@ -11,6 +11,8 @@
 		notifications.error($_(form.generalError));
 	}
 
+	let confirmDisclaimer = false;
+
 	let loading = false;
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
@@ -22,7 +24,7 @@
 </script>
 
 <div class="flex max-h-full items-center justify-center p-4 sm:px-6 lg:px-8">
-	<div class="w-full max-w-md">
+	<div class="w-full max-w-lg">
 		<div class="mt-4 space-y-6 bg-white dark:bg-gray-900 shadow-md p-8 rounded-lg">
 			<h3>{$_('page.first_visit.header')}</h3>
 			<p>{$_('page.first_visit.text')}</p>
@@ -51,9 +53,14 @@
 					/>
 					<InputError errors={form?.errors?.phone} />
 				</label>
+				<p class="unstyled text-sm">{$_('page.first_visit.disclaimer')}</p>
+				<label class="flex items-center space-x-2">
+					<input class="checkbox variant-ringed-primary" type="checkbox" bind:checked={confirmDisclaimer} />
+					<p>{$_('page.first_visit.confirm_disclaimer')}</p>
+				</label>
 				<button
 					type="submit"
-					disabled={loading}
+					disabled={loading || !confirmDisclaimer}
 					class="btn variant-filled-primary w-full"
 				>
 					{$_('label.save')}
