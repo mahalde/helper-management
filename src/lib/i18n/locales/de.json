@@ -1,11 +1,14 @@
 {
 	"errors": {
 		"email": "Keine gültige E-Mail-Adresse",
+		"end_time_before_start_time": "Endzeit muss nach Startzeit sein",
 		"invalid_credentials": "Ungültige Zugangsdaten",
+		"min_helpers": "Mindestens 1 Helfer",
 		"password": "Passwort muss mindestens 6 Zeichen haben",
 		"password_mismatch": "Passwörter stimmen nicht überein",
 		"required": "Muss angegeben werden",
 		"server_general": "Unbekannter Serverfehler. Bitte versuche es noch einmal",
+		"time_in_past": "Zeit liegt in Vergangenheit",
 		"unauthorized": "Nicht autorisiert. Bitte logge dich ein"
 	},
 	"label": {
@@ -18,16 +21,20 @@
 		"date.desc": "Datum (absteigend)",
 		"dressage": "Dressur",
 		"email": "E-Mail-Adresse",
+		"end_time": "Endzeit",
 		"helpers_needed": "Noch benötigte Helfer",
 		"log_out": "Ausloggen",
+		"max_helpers": "Maximale Anzahl von Helfern (optional)",
+		"min_helpers": "Minimale Anzahl von Helfern",
 		"name": "Name",
-		"num_of_helpers_needed": "Noch {num} benötigte Helfer",
+		"num_of_helpers_needed": "Noch {num} Helfer benötigt",
 		"password": "Passwort",
-		"phone": "Telefonnummer",
+		"phone": "Mobile Telefonnummer",
 		"remove_helper": "Als Helfer entfernen",
 		"save": "Speichern",
 		"showjumping": "Springen",
-		"sort_by": "Sortieren nach"
+		"sort_by": "Sortieren nach",
+		"start_time": "Startzeit"
 	},
 	"layout": {
 		"headline": "Helfereinteilung 2023"
@@ -46,10 +53,15 @@
 			"not_registered": "Noch nicht registriert? Dann melde dich hier an",
 			"register": "Registrieren"
 		},
+		"create_slot": {
+			"headline": "Zeitslot erstellen"
+		},
 		"dashboard": {
+			"all_times": "Alle Arbeitszeiten",
+			"create_slot": "Zeitslot erstellen",
 			"your_times": "Deine Arbeitszeiten",
-			"no_times": "Keine Zeiten ausgewählt",
-			"all_times": "Alle Arbeitszeiten"
+			"no_times": "Keine Zeiten vorhanden",
+			"no_times_chosen": "Keine Zeiten ausgewählt"
 		},
 		"first_visit": {
 			"header": "Willkommen bei der Helfereinteilung für die Turniere 2023 des Reiterverein Höven.",

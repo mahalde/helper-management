@@ -1,11 +1,14 @@
 {
 	"errors": {
 		"email": "Not a valid email",
+		"end_time_before_start_time": "End time must be after start time",
 		"invalid_credentials": "Invalid credentials",
+		"min_helpers": "At least 1 helper",
 		"password": "Password must have at least 6 characters",
 		"password_mismatch": "Passwords do not match",
 		"required": "Required",
 		"server_general": "Unknown server error. Please try again",
+		"time_in_past": "Time is in the past",
 		"unauthorized": "Unauthorized access. Please log in"
 	},
 	"label": {
@@ -47,9 +50,11 @@
 			"register": "Register"
 		},
 		"dashboard": {
+			"all_times": "All timeslots",
+			"create_slot": "Create timeslot",
 			"your_times": "Your timeslots",
-			"no_times": "No timeslots chosen",
-			"all_times": "All timeslots"
+			"no_times": "No timeslots available",
+			"no_times_chosen": "No timeslots chosen"
 		},
 		"first_visit": {
 			"header": "Welcome to the helper management for the 2023 tournaments of the Riding Club Höven.",

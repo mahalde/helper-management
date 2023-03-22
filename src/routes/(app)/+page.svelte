@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Slot, SortOption } from '$lib/types';
+	import { PERMISSIONS, type Slot, type SortOption } from '$lib/types';
 	import Icon from '$lib/ui/Icon.svelte';
 	import { adjustments_horizontal } from '$lib/ui/icons';
 	import SlotDisplay from '$lib/ui/SlotDisplay.svelte';
@@ -25,30 +25,44 @@
 </script>
 
 <div class="my-4 w-fit mx-2 sm:mx-auto">
+	{#if data.permissions.includes(PERMISSIONS.SLOT_CREATE)}
+		<a href="/create-slot" class="btn variant-filled-primary mb-8"
+			>{$_('page.dashboard.create_slot')}</a
+		>
+	{/if}
 	<h4 class="dark:text-gray-200 uppercase tracking-wide text-gray-500">
 		{$_('page.dashboard.your_times')}
 	</h4>
 	{#if yourSlots.length}
 		<SlotDisplay slots={yourSlots} withHelpers={false} sortOption={sortOptions[0]} />
 	{:else}
-		<p class="dark:text-white">{$_('page.dashboard.no_times')}</p>
+		<p class="dark:text-white">{$_('page.dashboard.no_times_chosen')}</p>
 	{/if}
 	<hr class="my-12" />
 	<div class="mb-2 flex justify-between items-center gap-24">
 		<h4 class="dark:text-gray-200 uppercase tracking-wide text-gray-500">
 			{$_('page.dashboard.all_times')}
 		</h4>
-		<label class="label">
-			<div class="flex text-gray-500 dark:text-gray-200 gap-1">
-				<Icon icon={adjustments_horizontal} viewBoxHeight={24} viewBoxWidth={24} />
-				{$_('label.sort_by')}
-			</div>
-			<select bind:value={selectedSortOption} class="select bg-transparent cursor-pointer py-0 border-none">
-				{#each sortOptions as sortOption}
-					<option value={sortOption}>{$_(sortOption.label)}</option>
-				{/each}
-			</select>
-		</label>
+		{#if data.slots?.length}
+			<label class="label">
+				<div class="flex text-gray-500 dark:text-gray-200 gap-1">
+					<Icon icon={adjustments_horizontal} viewBoxHeight={24} viewBoxWidth={24} />
+					{$_('label.sort_by')}
+				</div>
+				<select
+					bind:value={selectedSortOption}
+					class="select bg-transparent cursor-pointer py-0 border-none"
+				>
+					{#each sortOptions as sortOption}
+						<option value={sortOption}>{$_(sortOption.label)}</option>
+					{/each}
+				</select>
+			</label>
+		{/if}
 	</div>
-	<SlotDisplay slots={data.slots} sortOption={selectedSortOption} />
+	{#if data.slots?.length}
+		<SlotDisplay slots={data.slots} sortOption={selectedSortOption} />
+	{:else}
+		<p class="dark:text-white">{$_('page.dashboard.no_times')}</p>
+	{/if}
 </div>

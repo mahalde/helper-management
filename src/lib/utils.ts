@@ -1,3 +1,5 @@
+import type { ZodSchema } from 'zod';
+
 function parseLocaleString(localeString?: string | null) {
 	return localeString?.split(';')[0];
 }
@@ -17,3 +19,14 @@ export const getTimeFormatter = (locale?: string | null) =>
 		hour: '2-digit',
 		minute: '2-digit'
 	});
+
+// TODO: type safety
+export const valuesFromData = (data: FormData | Record<string, unknown>, schema: ZodSchema) =>
+	Object.keys(schema).reduce((acc, key) => {
+		if (data instanceof FormData) {
+			acc[key] = data.get(key) as string;
+		} else {
+			acc[key] = data[key];
+		}
+		return acc;
+	}, {} as Record<string, string | unknown>);
