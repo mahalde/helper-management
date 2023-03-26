@@ -3,6 +3,9 @@ import { z } from 'zod';
 export const NotificationType = z.enum(['info', 'success', 'warning', 'error']);
 export type NotificationType = z.infer<typeof NotificationType>;
 
+export const AdditionalCategoryFieldType = z.enum(['text']);
+export type AdditionalCategoryFieldType = z.infer<typeof AdditionalCategoryFieldType>;
+
 export const SlotCategory = z.enum(['catering', 'dressage', 'showjumping'], {
 	invalid_type_error: 'errors.invalid_type',
 	required_error: 'errors.required'
@@ -22,6 +25,15 @@ export const Organizer = z.object({
 });
 export type Organizer = z.infer<typeof Organizer>;
 
+export const AdditionalCategoryField = z.object({
+	id: z.number(),
+	name: z.string(),
+	description: z.string(),
+	type: AdditionalCategoryFieldType,
+	optional: z.boolean(),
+});
+export type AdditionalCategoryField = z.infer<typeof AdditionalCategoryField>;
+
 export const Slot = z.object({
 	id: z.string(),
 	name: z.string(),
@@ -32,6 +44,7 @@ export const Slot = z.object({
 	max_helpers: z.number().nullable(),
 	helpers: z.array(Helper),
 	contacts: z.array(Organizer),
+	additional_fields: z.array(AdditionalCategoryField),
 });
 export type Slot = z.infer<typeof Slot>;
 
@@ -50,3 +63,8 @@ export enum PERMISSIONS {
 	SLOT_CREATE = 'slots.create',
 	SLOT_DELETE = 'slots.delete',
 };
+
+export interface Modal {
+	show(): void;
+	hide(): void;
+}

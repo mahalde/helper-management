@@ -1,4 +1,9 @@
 {
+	"component": {
+		"slot": {
+			"additional_fields": "The organizer needs some additional information from you for this time slot."
+		}
+	},
 	"errors": {
 		"email": "Not a valid email",
 		"end_time_before_start_time": "End time must be after start time",
@@ -13,6 +18,7 @@
 	},
 	"label": {
 		"add_helper": "Sign up as helper",
+		"additional_fields": "Additional information",
 		"assigned_helpers": "Assigned helpers",
 		"category": "Category",
 		"catering": "Catering",
@@ -49,6 +55,10 @@
 			"log_in": "Log In",
 			"not_registered": "Not registered yet? Click here to register",
 			"register": "Register"
+		},
+		"create_slot": {
+			"additional_fields": "Here you can activate additional information that the helpers have to provide when applying to this time slot.",
+			"headline": "Create time slot"
 		},
 		"dashboard": {
 			"all_times": "All timeslots",

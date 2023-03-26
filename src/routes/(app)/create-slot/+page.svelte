@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { applyAction, enhance, type SubmitFunction } from '$app/forms';
 	import { notifications } from '$lib/stores';
-	import { SlotCategory } from '$lib/types';
+	import { SlotCategory, type AdditionalCategoryField } from '$lib/types';
 	import Icon from '$lib/ui/Icon.svelte';
 	import { minus, plus } from '$lib/ui/icons';
 	import InputError from '$lib/ui/InputError.svelte';
@@ -14,7 +14,22 @@
 		notifications.error($_(form.generalError));
 	}
 
-	let contacts: (string | null)[] = form?.values?.contacts as string[] | undefined ?? [null];
+	let selectedCategory: SlotCategory | '' = (form?.values?.category as SlotCategory) ?? '';
+	let additionalCategoryFields: AdditionalCategoryField[] = [];
+	$: if (selectedCategory) {
+		getAdditionalCategoryFields(selectedCategory);
+	}
+
+	async function getAdditionalCategoryFields(category: SlotCategory) {
+		const { data: additionalFields } = await data.supabase
+			.from('additional_category_fields')
+			.select<'*', AdditionalCategoryField>('*')
+			.eq('category', category);
+
+		additionalCategoryFields = additionalFields ?? [];
+	}
+
+	let contacts: (string | null)[] = (form?.values?.contacts as string[] | undefined) ?? [null];
 
 	let loading = false;
 	const handleSubmit: SubmitFunction = () => {
@@ -56,7 +71,7 @@
 					<span>{$_('label.category')}</span>
 					<select
 						name="category"
-						value={form?.values?.category ?? ''}
+						bind:value={selectedCategory}
 						class="input"
 						class:input-error={form?.errors?.category}
 					>
@@ -128,7 +143,7 @@
 								class="input"
 								class:input-error={form?.errors?.contacts}
 							>
-								<option value={''}></option>
+								<option value={''} />
 								{#each data.organizers as organizer (organizer.id)}
 									<option value={organizer.id}>{organizer.name}</option>
 								{/each}
@@ -137,7 +152,7 @@
 								<button
 									type="button"
 									class="btn btn-icon rounded-lg variant-ringed-primary"
-									on:click={() => contacts = [...contacts, null]}
+									on:click={() => (contacts = [...contacts, null])}
 								>
 									<Icon viewBoxHeight={24} viewBoxWidth={24} icon={plus} />
 								</button>
@@ -145,7 +160,7 @@
 								<button
 									type="button"
 									class="btn btn-icon rounded-lg variant-ringed-error"
-									on:click={() => contacts = [...contacts.slice(0, i), ...contacts.slice(i + 1)]}
+									on:click={() => (contacts = [...contacts.slice(0, i), ...contacts.slice(i + 1)])}
 								>
 									<Icon viewBoxHeight={24} viewBoxWidth={24} icon={minus} />
 								</button>
@@ -154,6 +169,26 @@
 						<InputError errors={form?.errors?.contacts} />
 					{/each}
 				</label>
+			{/if}
+			{#if additionalCategoryFields.length}
+				<hr />
+				<p class="unstyled text-lg">{$_('label.additional_fields')}</p>
+				<p>{$_('page.create_slot.additional_fields')}</p>
+				{#each additionalCategoryFields as field (field.id)}
+					<label class="flex items-center gap-2">
+						<input
+							name="additional_field_{field.id}"
+							type="checkbox"
+							class="checkbox variant-ringed-primary"
+						/>
+						<p>
+							{field.name}
+							{#if field.description}
+								({field.description})
+							{/if}
+						</p>
+					</label>
+				{/each}
 			{/if}
 			<button type="submit" disabled={loading} class="btn variant-filled-primary w-full">
 				{$_('label.save')}

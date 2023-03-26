@@ -3,12 +3,13 @@
 	import { invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { notifications } from '$lib/stores';
-	import type { Slot, SlotCategory } from '$lib/types';
+	import type { Modal as ModalType, Slot, SlotCategory } from '$lib/types';
 	import { getDateFormatter, getTimeFormatter } from '$lib/utils';
 	import { isSameDay } from 'date-fns';
 	import { locale, _ } from 'svelte-i18n';
 	import Icon from './Icon.svelte';
 	import { catering, dressage, minus, obstacle, plus } from './icons';
+	import Modal from './Modal.svelte';
 
 	export let slot: Slot;
 	export let withHelpers = true;
@@ -22,6 +23,11 @@
 	const dateFormatter = getDateFormatter($locale, true);
 	const timeFormatter = getTimeFormatter($locale);
 
+	let additionalFieldsModal: ModalType | undefined;
+	function needsAdditionalInformation(): boolean {
+		return slot.additional_fields.length > 0 && !alreadyHelper;
+	}
+
 	let loading = false;
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
@@ -33,6 +39,7 @@
 			}
 			await applyAction(result);
 			loading = false;
+			additionalFieldsModal?.hide();
 		};
 	};
 
@@ -70,15 +77,56 @@
 	>
 		<input type="hidden" name="slot_id" value={slot.id} />
 		{#if alreadyHelper}
-			<button disabled={loading} class="btn btn-sm variant-glass-secondary w-fit gap-2 mt-2">
+			<button
+				type="submit"
+				disabled={loading}
+				class="btn btn-sm variant-glass-secondary w-fit gap-2 mt-2"
+			>
 				<span><Icon icon={minus} viewBoxHeight={24} viewBoxWidth={24} /></span>
 				{$_('label.remove_helper')}
 			</button>
 		{:else}
-			<button disabled={loading} class="btn btn-sm variant-glass-primary w-fit gap-2 self-end mt-2">
+			<button
+				type={needsAdditionalInformation() ? 'button' : 'submit'}
+				on:click={() => {
+					if (needsAdditionalInformation()) additionalFieldsModal?.show();
+				}}
+				disabled={loading}
+				class="btn btn-sm variant-glass-primary w-fit gap-2 self-end mt-2"
+			>
 				<span><Icon icon={plus} viewBoxHeight={24} viewBoxWidth={24} /></span>
 				{$_('label.add_helper')}
 			</button>
+		{/if}
+		{#if needsAdditionalInformation()}
+			<Modal bind:modal={additionalFieldsModal}>
+				<div class="p-4 space-y-4 flex flex-col">
+					<p class="unstyled text-xl mb-2">{$_('label.additional_fields')}</p>
+					<p>{$_('component.slot.additional_fields')}</p>
+					{#each slot.additional_fields as field (field.id)}
+						<label class="label">
+							<p>
+								{field.name}
+								{#if field.description}
+									<span class="text-gray-500">({field.description})</span>
+								{/if}
+							</p>
+							{#if field.type === 'text'}
+								<input
+									type="text"
+									name="additional_field_{field.id}"
+									required={!field.optional}
+									class="input"
+								/>
+							{/if}
+						</label>
+					{/each}
+					<button type="submit" class="btn variant-glass-primary gap-2">
+						<span><Icon icon={plus} viewBoxHeight={24} viewBoxWidth={24} /></span>
+						{$_('label.add_helper')}
+					</button>
+				</div>
+			</Modal>
 		{/if}
 	</form>
 	{#if slot.contacts.length}
@@ -89,7 +137,7 @@
 		<div class="grid grid-cols-[auto_1fr] gap-x-4 text-gray-500 dark:text-gray-300">
 			{#each slot.contacts as contact (contact.id)}
 				<span>{contact.name}</span>
-				<span>(<a href="tel:{contact.phone}">{contact.phone}</a>)</span>
+				<span>(<a class="!text-primary-500" href="tel:{contact.phone}">{contact.phone}</a>)</span>
 			{/each}
 		</div>
 	{/if}
@@ -109,18 +157,4 @@
 			<p class="text-gray-500 dark:text-gray-300">{helper.name}</p>
 		{/each}
 	{/if}
-</div>
-
-<!-- Contacts popup-->
-<div
-	data-popup="contacts-popup-{slot.id}"
-	class="w-fit border border-gray-300 rounded-md p-2 z-10 bg-gray-50 dark:bg-gray-700"
->
-	<p>{$_('label.contacts')}</p>
-	<div class="mt-2 grid grid-cols-2 text-sm">
-		{#each slot.contacts as contact (contact.id)}
-			<span>{contact.name}</span>
-			<span>(<a href="tel:{contact.phone}">{contact.phone}</a>)</span>
-		{/each}
-	</div>
 </div>

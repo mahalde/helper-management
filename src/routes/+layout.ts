@@ -23,11 +23,15 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 		data: { session }
 	} = await supabase.auth.getSession();
 
-	const permissions: string[] = await supabase
+	let permissions: string[] = [];
+
+	if (session?.user.id) {
+		permissions = await supabase
 		.from('user_permissions')
-		.select('permissions')
-		.eq('user_id', session?.user.id)
-		.then(({ data }) => data?.flatMap(row => row.permissions) ?? []);
+			.select('permissions')
+			.eq('user_id', session?.user.id)
+			.then(({ data }) => data?.flatMap(row => row.permissions) ?? []);
+	}
 
 	if (browser) {
 		locale.set(window.navigator.language);

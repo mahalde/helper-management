@@ -15,7 +15,8 @@ const slotSchema = z
 			.min(new Date(), 'errors.time_in_past'),
 		min_helpers: z.number().min(1, 'errors.min_helpers'),
 		max_helpers: z.number().positive().nullable(),
-		contacts: z.array(z.string()).optional()
+		contacts: z.array(z.string()),
+		additional_fields: z.array(z.number())
 	})
 	.superRefine((data, ctx) => {
 		if (data.start_time > data.end_time) {
@@ -30,9 +31,11 @@ const slotSchema = z
 export const actions = {
 	async createSlot({ request, locals: { supabase, getSession } }) {
 		const formData = await request.formData();
-		console.log(formData);
 		const startTime = formData.get('start_time');
 		const endTime = formData.get('end_time');
+		const additionalFields = [...formData.keys()]
+			.filter((key) => key.startsWith('additional_field_') && formData.get(key) === 'on')
+			.map((key) => Number(key.replace('additional_field_', '')));
 		const values = {
 			name: formData.get('name'),
 			category: formData.get('category') ?? undefined,
@@ -40,7 +43,8 @@ export const actions = {
 			end_time: endTime ? new Date(endTime as string) : undefined,
 			min_helpers: Number(formData.get('min_helpers')),
 			max_helpers: Number(formData.get('max_helpers')) || null,
-			contacts: formData.getAll('contacts').filter((contact) => contact !== '')
+			contacts: formData.getAll('contacts').filter((contact) => contact !== ''),
+			additional_fields: additionalFields,
 		};
 		const result = slotSchema.safeParse(values);
 		const formDataValues = valuesFromData(formData, slotSchema);

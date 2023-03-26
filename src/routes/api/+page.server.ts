@@ -7,6 +7,13 @@ export const actions: Actions = {
 		const slot_id = formData.get('slot_id') as string;
 		const user_id = (await getSession())?.user.id;
 
+		const additionalFields = [...formData.keys()]
+			.filter(key => key.startsWith('additional_field_'))
+			.map(key => ({
+				key: Number(key.replace('additional_field_', '')),
+				value: formData.get(key) as string
+			}));
+
 		if (!user_id) {
 			return fail(401, { generalError: 'errors.unauthorized' });
 		}
@@ -14,7 +21,8 @@ export const actions: Actions = {
 		const { error } = await supabase.from('selected_slots').insert({
 			slot_id,
 			user_id,
-			selected_on: new Date()
+			selected_on: new Date(),
+			additional_field_data: additionalFields,
 		});
 
 		if (error) {
