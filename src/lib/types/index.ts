@@ -15,6 +15,13 @@ export const Helper = z.object({
 });
 export type Helper = z.infer<typeof Helper>;
 
+export const Organizer = z.object({
+	id: z.string(),
+	name: z.string(),
+	phone: z.string(),
+});
+export type Organizer = z.infer<typeof Organizer>;
+
 export const Slot = z.object({
 	id: z.string(),
 	name: z.string(),
@@ -23,7 +30,8 @@ export const Slot = z.object({
 	end_time: z.date(),
 	min_helpers: z.number(),
 	max_helpers: z.number().nullable(),
-	helpers: z.array(Helper)
+	helpers: z.array(Helper),
+	contacts: z.array(Organizer),
 });
 export type Slot = z.infer<typeof Slot>;
 

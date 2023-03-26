@@ -39,7 +39,7 @@
 		<p class="dark:text-white">{$_('page.dashboard.no_times_chosen')}</p>
 	{/if}
 	<hr class="my-12" />
-	<div class="mb-2 flex justify-between items-center gap-24">
+	<div class="mb-2 flex flex-col sm:flex-row justify-between sm:items-center gap-4 sm:gap-24">
 		<h4 class="dark:text-gray-200 uppercase tracking-wide text-gray-500">
 			{$_('page.dashboard.all_times')}
 		</h4>
@@ -51,7 +51,7 @@
 				</div>
 				<select
 					bind:value={selectedSortOption}
-					class="select bg-transparent cursor-pointer py-0 border-none"
+					class="select bg-transparent cursor-pointer py-0 border-none w-auto"
 				>
 					{#each sortOptions as sortOption}
 						<option value={sortOption}>{$_(sortOption.label)}</option>

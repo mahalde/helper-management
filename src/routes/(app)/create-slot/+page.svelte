@@ -2,14 +2,19 @@
 	import { applyAction, enhance, type SubmitFunction } from '$app/forms';
 	import { notifications } from '$lib/stores';
 	import { SlotCategory } from '$lib/types';
+	import Icon from '$lib/ui/Icon.svelte';
+	import { minus, plus } from '$lib/ui/icons';
 	import InputError from '$lib/ui/InputError.svelte';
 	import { _ } from 'svelte-i18n';
 
+	export let data;
 	export let form;
 
 	$: if (form?.generalError) {
 		notifications.error($_(form.generalError));
 	}
+
+	let contacts: (string | null)[] = form?.values?.contacts as string[] | undefined ?? [null];
 
 	let loading = false;
 	const handleSubmit: SubmitFunction = () => {
@@ -25,9 +30,16 @@
 </script>
 
 <div class="flex w-full justify-center">
-	<div class="w-full max-w-xl m-4 sm:mx-6 lg:mx-8 p-4 border border-gray-300 rounded-lg shadow-sm space-y-8">
+	<div
+		class="w-full max-w-xl m-4 sm:mx-6 lg:mx-8 p-4 border border-gray-300 rounded-lg shadow-sm space-y-8"
+	>
 		<h3>{$_('page.create_slot.headline')}</h3>
-		<form use:enhance={handleSubmit} method="POST" action="?/createSlot" class="flex flex-col gap-6">
+		<form
+			use:enhance={handleSubmit}
+			method="POST"
+			action="?/createSlot"
+			class="flex flex-col gap-6"
+		>
 			<div class="flex flex-col sm:flex-row gap-4 justify-between">
 				<label class="label grow">
 					<span>{$_('label.name')}</span>
@@ -48,10 +60,10 @@
 						class="input"
 						class:input-error={form?.errors?.category}
 					>
-					{#each Object.keys(SlotCategory.enum) as category}
-						<option value={category}>{$_(`label.${category}`)}</option>
-					{/each}
-				</select>
+						{#each Object.keys(SlotCategory.enum) as category}
+							<option value={category}>{$_(`label.${category}`)}</option>
+						{/each}
+					</select>
 					<InputError errors={form?.errors?.category} />
 				</label>
 			</div>
@@ -105,12 +117,47 @@
 					<InputError errors={form?.errors?.max_helpers} />
 				</label>
 			</div>
-			<button
-				type="submit"
-				disabled={loading}
-				class="btn variant-filled-primary w-full"
-			>
+			{#if data.organizers?.length}
+				<label class="label">
+					<span>{$_('label.contacts')}</span>
+					{#each contacts as _, i (i)}
+						<div class="flex gap-4">
+							<select
+								name="contacts"
+								bind:value={contacts[i]}
+								class="input"
+								class:input-error={form?.errors?.contacts}
+							>
+								<option value={''}></option>
+								{#each data.organizers as organizer (organizer.id)}
+									<option value={organizer.id}>{organizer.name}</option>
+								{/each}
+							</select>
+							{#if i + 1 === contacts.length}
+								<button
+									type="button"
+									class="btn btn-icon rounded-lg variant-ringed-primary"
+									on:click={() => contacts = [...contacts, null]}
+								>
+									<Icon viewBoxHeight={24} viewBoxWidth={24} icon={plus} />
+								</button>
+							{:else}
+								<button
+									type="button"
+									class="btn btn-icon rounded-lg variant-ringed-error"
+									on:click={() => contacts = [...contacts.slice(0, i), ...contacts.slice(i + 1)]}
+								>
+									<Icon viewBoxHeight={24} viewBoxWidth={24} icon={minus} />
+								</button>
+							{/if}
+						</div>
+						<InputError errors={form?.errors?.contacts} />
+					{/each}
+				</label>
+			{/if}
+			<button type="submit" disabled={loading} class="btn variant-filled-primary w-full">
 				{$_('label.save')}
 			</button>
+		</form>
 	</div>
 </div>

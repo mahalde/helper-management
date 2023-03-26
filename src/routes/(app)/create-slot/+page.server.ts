@@ -14,7 +14,8 @@ const slotSchema = z
 			.date({ invalid_type_error: 'errors.invalid_type', required_error: 'errors.required' })
 			.min(new Date(), 'errors.time_in_past'),
 		min_helpers: z.number().min(1, 'errors.min_helpers'),
-		max_helpers: z.number().optional()
+		max_helpers: z.number().positive().nullable(),
+		contacts: z.array(z.string()).optional()
 	})
 	.superRefine((data, ctx) => {
 		if (data.start_time > data.end_time) {
@@ -38,7 +39,8 @@ export const actions = {
 			start_time: startTime ? new Date(startTime as string) : undefined,
 			end_time: endTime ? new Date(endTime as string) : undefined,
 			min_helpers: Number(formData.get('min_helpers')),
-			max_helpers: Number(formData.get('max_helpers'))
+			max_helpers: Number(formData.get('max_helpers')) || null,
+			contacts: formData.getAll('contacts').filter((contact) => contact !== '')
 		};
 		const result = slotSchema.safeParse(values);
 		const formDataValues = valuesFromData(formData, slotSchema);

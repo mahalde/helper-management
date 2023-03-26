@@ -12,7 +12,7 @@
 	fill={fill ? color : 'none'}
 	viewBox="0 0 {viewBoxWidth ?? size} {viewBoxHeight ?? size}"
 	style="width:{size}px; height:{size}px; stroke: {color}"
-	class="stroke-current flex-shrink-0 {$$props.class}"
+	class="flex-shrink-0 {$$props.class}"
 	on:click
 	on:keypress
 >

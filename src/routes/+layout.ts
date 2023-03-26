@@ -27,8 +27,7 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 		.from('user_permissions')
 		.select('permissions')
 		.eq('user_id', session?.user.id)
-		.single()
-		.then(({ data }) => data?.permissions ?? []);
+		.then(({ data }) => data?.flatMap(row => row.permissions) ?? []);
 
 	if (browser) {
 		locale.set(window.navigator.language);

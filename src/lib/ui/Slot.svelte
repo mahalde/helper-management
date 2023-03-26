@@ -70,10 +70,7 @@
 	>
 		<input type="hidden" name="slot_id" value={slot.id} />
 		{#if alreadyHelper}
-			<button
-				disabled={loading}
-				class="btn btn-sm variant-glass-secondary w-fit gap-2 mt-2"
-			>
+			<button disabled={loading} class="btn btn-sm variant-glass-secondary w-fit gap-2 mt-2">
 				<span><Icon icon={minus} viewBoxHeight={24} viewBoxWidth={24} /></span>
 				{$_('label.remove_helper')}
 			</button>
@@ -84,9 +81,21 @@
 			</button>
 		{/if}
 	</form>
+	{#if slot.contacts.length}
+		<hr class="my-2" />
+		<span class="text-gray-500 dark:text-gray-300 mb-2">
+			{$_('label.contacts')}
+		</span>
+		<div class="grid grid-cols-[auto_1fr] gap-x-4 text-gray-500 dark:text-gray-300">
+			{#each slot.contacts as contact (contact.id)}
+				<span>{contact.name}</span>
+				<span>(<a href="tel:{contact.phone}">{contact.phone}</a>)</span>
+			{/each}
+		</div>
+	{/if}
 	{#if withHelpers && slot.helpers.length}
-		<hr class="m-2" />
-		<span class="text-gray-500 dark:text-gray-300 text-sm uppercase tracking-wide">
+		<hr class="my-2" />
+		<span class="text-gray-500 dark:text-gray-300 mb-2">
 			{$_('label.assigned_helpers')}
 			{#if slot.helpers.length < slot.min_helpers}
 				({$_('label.num_of_helpers_needed', {
@@ -100,4 +109,18 @@
 			<p class="text-gray-500 dark:text-gray-300">{helper.name}</p>
 		{/each}
 	{/if}
+</div>
+
+<!-- Contacts popup-->
+<div
+	data-popup="contacts-popup-{slot.id}"
+	class="w-fit border border-gray-300 rounded-md p-2 z-10 bg-gray-50 dark:bg-gray-700"
+>
+	<p>{$_('label.contacts')}</p>
+	<div class="mt-2 grid grid-cols-2 text-sm">
+		{#each slot.contacts as contact (contact.id)}
+			<span>{contact.name}</span>
+			<span>(<a href="tel:{contact.phone}">{contact.phone}</a>)</span>
+		{/each}
+	</div>
 </div>
