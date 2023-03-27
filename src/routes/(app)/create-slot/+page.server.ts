@@ -31,8 +31,8 @@ const slotSchema = z
 export const actions = {
 	async createSlot({ request, locals: { supabase, getSession } }) {
 		const formData = await request.formData();
-		const startTime = formData.get('start_time');
-		const endTime = formData.get('end_time');
+		const startTime = formData.get('start_time') as string;
+		const endTime = formData.get('end_time') as string;
 		const additionalFields = [...formData.keys()]
 			.filter((key) => key.startsWith('additional_field_') && formData.get(key) === 'on')
 			.map((key) => Number(key.replace('additional_field_', '')));
@@ -44,10 +44,12 @@ export const actions = {
 			min_helpers: Number(formData.get('min_helpers')),
 			max_helpers: Number(formData.get('max_helpers')) || null,
 			contacts: formData.getAll('contacts').filter((contact) => contact !== ''),
-			additional_fields: additionalFields,
+			additional_fields: additionalFields
 		};
 		const result = slotSchema.safeParse(values);
 		const formDataValues = valuesFromData(formData, slotSchema);
+		formDataValues.start_time = (formDataValues.start_time as string).split('+')[0];
+		formDataValues.end_time = (formDataValues.end_time as string).split('+')[0];
 		if (!result.success) {
 			const errors = result.error.flatten().fieldErrors;
 			return fail(400, {

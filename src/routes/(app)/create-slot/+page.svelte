@@ -5,6 +5,7 @@
 	import Icon from '$lib/ui/Icon.svelte';
 	import { minus, plus } from '$lib/ui/icons';
 	import InputError from '$lib/ui/InputError.svelte';
+	import { formatISO, parseISO } from 'date-fns';
 	import { _ } from 'svelte-i18n';
 
 	export let data;
@@ -32,8 +33,11 @@
 	let contacts: (string | null)[] = (form?.values?.contacts as string[] | undefined) ?? [null];
 
 	let loading = false;
-	const handleSubmit: SubmitFunction = () => {
+	const handleSubmit: SubmitFunction = ({data}) => {
 		loading = true;
+		const [startTime, endTime] = updateDateFields();
+		data.set('start_time', startTime);
+		data.set('end_time', endTime);
 		return async ({ result }) => {
 			if (result.type === 'redirect') {
 				notifications.success($_('notification.success.changes_saved'));
@@ -42,6 +46,22 @@
 			loading = false;
 		};
 	};
+
+	let startTimeEl: HTMLInputElement;
+	let endTimeEl: HTMLInputElement;
+	function updateDateFields() {
+		let startTime = startTimeEl.value;
+		if (startTime) {
+			startTime = formatISO(parseISO(startTime));
+		}
+		
+		let endTime = endTimeEl.value;
+		if (endTime) {
+			endTime = formatISO(parseISO(endTime));
+		}
+
+		return [startTime, endTime] as const;
+	}
 </script>
 
 <div class="flex w-full justify-center">
@@ -86,6 +106,7 @@
 				<label class="label">
 					<span>{$_('label.start_time')}</span>
 					<input
+						bind:this={startTimeEl}
 						name="start_time"
 						type="datetime-local"
 						value={form?.values?.start_time ?? ''}
@@ -97,6 +118,7 @@
 				<label class="label">
 					<span>{$_('label.end_time')}</span>
 					<input
+						bind:this={endTimeEl}
 						name="end_time"
 						type="datetime-local"
 						value={form?.values?.end_time ?? ''}
