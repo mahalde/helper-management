@@ -78,7 +78,7 @@
 	<span class="text-lg dark:text-white">
 		{slot.name}
 	</span>
-	<div class="self-end flex gap-4 mt-2">
+	<div class="self-end flex gap-4 mt-2 flex-wrap justify-end">
 		{#if isContact}
 			<form method="POST" action='/api?/delete_slot' use:enhance={handleSubmit}>
 				<input type="hidden" name="slot_id" value={slot.id} />
