@@ -2,7 +2,8 @@
 	"component": {
 		"slot": {
 			"additional_fields": "The organizer needs some additional information from you for this time slot.",
-			"additional_helper": "As an organiser, you can enter a helper here who has registered with you personally and does not have access to the online helper management. Please enter only one helper. If you don't fill in these fields, you assign yourself as helper for this slot."
+			"additional_helper": "As an organiser, you can enter a helper here who has registered with you personally and does not have access to the online helper management. Please enter only one helper. If you don't fill in these fields, you assign yourself as helper for this slot.",
+			"confirm_delete": "Do you really want to delete timeslot \"{name}\"?"
 		}
 	},
 	"errors": {
@@ -28,7 +29,9 @@
 		"contacts": "Contacts",
 		"date.asc": "Date (ascending)",
 		"date.desc": "Date (descending)",
+		"delete": "Delete",
 		"dressage": "Dressage",
+		"edit": "Edit",
 		"email": "E-Mail address",
 		"helpers_needed": "Helpers needed",
 		"log_out": "Log out",
@@ -59,8 +62,8 @@
 			"register": "Register"
 		},
 		"create_slot": {
-			"additional_fields": "Here you can activate additional information that the helpers have to provide when applying to this time slot.",
-			"headline": "Create time slot"
+			"additional_fields": "Here you can activate additional information that the helpers have to provide when applying to this timeslot.",
+			"headline": "Create timeslot"
 		},
 		"dashboard": {
 			"all_times": "All timeslots",
@@ -68,6 +71,9 @@
 			"your_times": "Your timeslots",
 			"no_times": "No timeslots available",
 			"no_times_chosen": "No timeslots chosen"
+		},
+		"edit_slot": {
+			"headline": "Edit timeslot"
 		},
 		"first_visit": {
 			"confirm_disclaimer": "I agree to the use of the data",

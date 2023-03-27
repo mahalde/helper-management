@@ -1,4 +1,4 @@
-import { z, ZodSchema } from 'zod';
+import { z } from 'zod';
 
 function parseLocaleString(localeString?: string | null) {
 	return localeString?.split(';')[0];
@@ -21,7 +21,7 @@ export const getTimeFormatter = (locale?: string | null) =>
 	});
 
 // TODO: type safety
-export const valuesFromData = <T extends z.ZodTypeAny>(data: FormData | Record<string, unknown>, schema: T) => 
+export const valuesFromData = <T extends z.ZodTypeAny>(data: FormData | Record<string, any>, schema: T) => 
 	zodKeys(schema).reduce((acc, key) => {
 		if (data instanceof FormData) {
 			acc[key] = data.get(key) as string;
@@ -29,7 +29,7 @@ export const valuesFromData = <T extends z.ZodTypeAny>(data: FormData | Record<s
 			acc[key] = data[key];
 		}
 		return acc;
-	}, {} as Record<string, string | unknown>);
+	}, {} as Record<string, string | any>);
 
 const zodKeys = <T extends z.ZodTypeAny>(schema: T): string[] => {
 	// make sure schema is not null or undefined

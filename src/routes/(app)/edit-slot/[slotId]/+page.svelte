@@ -5,7 +5,7 @@
 	import Icon from '$lib/ui/Icon.svelte';
 	import { minus, plus } from '$lib/ui/icons';
 	import InputError from '$lib/ui/InputError.svelte';
-	import { formatISO, parseISO } from 'date-fns';
+	import { formatISO, lightFormat, parseISO } from 'date-fns';
 	import { _ } from 'svelte-i18n';
 
 	export let data;
@@ -15,7 +15,8 @@
 		notifications.error($_(form.generalError));
 	}
 
-	let selectedCategory: SlotCategory | '' = (form?.values?.category as SlotCategory) ?? '';
+	let selectedCategory: SlotCategory | '' =
+		(form?.values?.category as SlotCategory) ?? data.slot.category ?? '';
 	let additionalCategoryFields: AdditionalCategoryField[] = [];
 	$: if (selectedCategory) {
 		getAdditionalCategoryFields(selectedCategory);
@@ -30,10 +31,11 @@
 		additionalCategoryFields = additionalFields ?? [];
 	}
 
-	let contacts: (string | null)[] = (form?.values?.contacts as string[] | undefined) ?? [null];
+	let contacts: (string | null)[] = (form?.values?.contacts as string[] | undefined) ??
+		data.slot.contacts.map((contact) => contact.id) ?? [null];
 
 	let loading = false;
-	const handleSubmit: SubmitFunction = ({data}) => {
+	const handleSubmit: SubmitFunction = ({ data }) => {
 		loading = true;
 		const [startTime, endTime] = updateDateFields();
 		data.set('start_time', startTime);
@@ -54,7 +56,7 @@
 		if (startTime) {
 			startTime = formatISO(parseISO(startTime));
 		}
-		
+
 		let endTime = endTimeEl.value;
 		if (endTime) {
 			endTime = formatISO(parseISO(endTime));
@@ -62,26 +64,25 @@
 
 		return [startTime, endTime] as const;
 	}
+
+	function formatDate(date: Date) {
+		return lightFormat(parseISO(date as unknown as string), "yyyy-MM-dd'T'HH:mm");
+	}
 </script>
 
 <div class="flex w-full justify-center">
 	<div
 		class="w-full max-w-xl m-4 sm:mx-6 lg:mx-8 p-4 border border-gray-300 rounded-lg shadow-sm space-y-8"
 	>
-		<h3>{$_('page.create_slot.headline')}</h3>
-		<form
-			use:enhance={handleSubmit}
-			method="POST"
-			action="?/createSlot"
-			class="flex flex-col gap-6"
-		>
+		<h3>{$_('page.edit_slot.headline')}</h3>
+		<form use:enhance={handleSubmit} method="POST" action="?/editSlot" class="flex flex-col gap-6">
 			<div class="flex flex-col sm:flex-row gap-4 justify-between">
 				<label class="label grow">
 					<span>{$_('label.name')}</span>
 					<input
 						name="name"
 						type="text"
-						value={form?.values?.name ?? ''}
+						value={form?.values?.name ?? data.slot.name ?? ''}
 						class="input"
 						class:input-error={form?.errors?.name}
 					/>
@@ -109,7 +110,7 @@
 						bind:this={startTimeEl}
 						name="start_time"
 						type="datetime-local"
-						value={form?.values?.start_time ?? ''}
+						value={form?.values?.start_time ?? formatDate(data.slot.start_time) ?? ''}
 						class="input"
 						class:input-error={form?.errors?.start_time}
 					/>
@@ -121,7 +122,7 @@
 						bind:this={endTimeEl}
 						name="end_time"
 						type="datetime-local"
-						value={form?.values?.end_time ?? ''}
+						value={form?.values?.end_time ?? formatDate(data.slot.end_time) ?? ''}
 						class="input"
 						class:input-error={form?.errors?.end_time}
 					/>
@@ -134,7 +135,7 @@
 					<input
 						name="min_helpers"
 						type="number"
-						value={form?.values?.min_helpers ?? 0}
+						value={form?.values?.min_helpers ?? data.slot.min_helpers ?? 0}
 						class="input"
 						min={0}
 						class:input-error={form?.errors?.min_helpers}
@@ -146,7 +147,7 @@
 					<input
 						name="max_helpers"
 						type="number"
-						value={form?.values?.max_helpers ?? null}
+						value={form?.values?.max_helpers ?? data.slot.max_helpers ?? null}
 						class="input"
 						min={0}
 						class:input-error={form?.errors?.max_helpers}
@@ -201,7 +202,8 @@
 						<input
 							name="additional_field_{field.id}"
 							type="checkbox"
-							checked={form?.values.additional_fields.some((formField) => formField === field.id)}
+							checked={form?.values.additional_fields.some((formField) => formField === field.id) ??
+								data.slot.additional_fields.some((slotField) => slotField.id === field.id)}
 							class="checkbox variant-ringed-primary"
 						/>
 						<p>

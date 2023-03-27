@@ -7,12 +7,14 @@ const slotSchema = z
 	.object({
 		name: z.string().trim().min(1, 'errors.required'),
 		category: SlotCategory,
-		start_time: z
-			.date({ invalid_type_error: 'errors.invalid_type', required_error: 'errors.required' })
-			.min(new Date(), 'errors.time_in_past'),
-		end_time: z
-			.date({ invalid_type_error: 'errors.invalid_type', required_error: 'errors.required' })
-			.min(new Date(), 'errors.time_in_past'),
+		start_time: z.date({
+			invalid_type_error: 'errors.invalid_type',
+			required_error: 'errors.required'
+		}),
+		end_time: z.date({
+			invalid_type_error: 'errors.invalid_type',
+			required_error: 'errors.required'
+		}),
 		min_helpers: z.number().min(1, 'errors.min_helpers'),
 		max_helpers: z.number().positive().nullable(),
 		contacts: z.array(z.string()),
@@ -29,7 +31,7 @@ const slotSchema = z
 	});
 
 export const actions = {
-	async createSlot({ request, locals: { supabase, getSession } }) {
+	async editSlot({ params: { slotId }, request, locals: { supabase, getSession } }) {
 		const formData = await request.formData();
 		const startTime = formData.get('start_time') as string;
 		const endTime = formData.get('end_time') as string;
@@ -51,6 +53,7 @@ export const actions = {
 		formDataValues.start_time = (formDataValues.start_time as string).split('+')[0];
 		formDataValues.end_time = (formDataValues.end_time as string).split('+')[0];
 		formDataValues.additional_fields = additionalFields;
+		console.log(formData);
 		if (!result.success) {
 			const errors = result.error.flatten().fieldErrors;
 			return fail(400, {
@@ -67,7 +70,7 @@ export const actions = {
 			});
 		}
 
-		const { error } = await supabase.from('slots').insert(result.data);
+		const { error } = await supabase.from('slots').update(result.data).eq('id', slotId);
 
 		if (error) {
 			console.error(error);

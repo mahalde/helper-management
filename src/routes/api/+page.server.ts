@@ -88,5 +88,16 @@ export const actions: Actions = {
 			console.error(error);
 			return fail(500, { generalError: 'errors.server_general' });
 		}
+	},
+	async delete_slot({ request, locals: { supabase } }) {
+		const formData = await request.formData();
+		const slot_id = formData.get('slot_id') as string;
+
+		const { error } = await supabase.from('slots').delete().eq('id', slot_id);
+
+		if (error) {
+			console.error(error);
+			return fail(500, { generalError: 'errors.server_general' });
+		}
 	}
 };

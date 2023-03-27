@@ -2,7 +2,8 @@
 	"component": {
 		"slot": {
 			"additional_fields": "Der Organisator benötigt für diesen Zeitslot zusätzliche Informationen von dir.",
-			"additional_helper": "Hier kannst du als Organisator einen Helfer eintragen, der sich bei dir persönlich gemeldet hat und keinen Zugriff auf die Online-Helfereinteilung hat. Bitte gebe nur einen Helfer an. Lässt du diese Felder leer, trägst du dich selber als Helfer für diesen Zeitslot ein."
+			"additional_helper": "Hier kannst du als Organisator einen Helfer eintragen, der sich bei dir persönlich gemeldet hat und keinen Zugriff auf die Online-Helfereinteilung hat. Bitte gebe nur einen Helfer an. Lässt du diese Felder leer, trägst du dich selber als Helfer für diesen Zeitslot ein.",
+			"confirm_delete": "Möchtest du den Zeitslot \"{name}\" wirklich löschen?"
 		}
 	},
 	"errors": {
@@ -28,7 +29,9 @@
 		"contacts": "Ansprechpartner",
 		"date.asc": "Datum (aufsteigend)",
 		"date.desc": "Datum (absteigend)",
+		"delete": "Löschen",
 		"dressage": "Dressur",
+		"edit": "Bearbeiten",
 		"email": "E-Mail-Adresse",
 		"end_time": "Endzeit",
 		"helpers_needed": "Noch benötigte Helfer",
@@ -72,6 +75,9 @@
 			"your_times": "Deine Arbeitszeiten",
 			"no_times": "Keine Zeiten vorhanden",
 			"no_times_chosen": "Keine Zeiten ausgewählt"
+		},
+		"edit_slot": {
+			"headline": "Zeitslot bearbeiten"
 		},
 		"first_visit": {
 			"confirm_disclaimer": "Ich stimme der Verwendung meiner Daten zu.",
