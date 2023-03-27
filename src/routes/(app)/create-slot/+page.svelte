@@ -5,7 +5,7 @@
 	import Icon from '$lib/ui/Icon.svelte';
 	import { minus, plus } from '$lib/ui/icons';
 	import InputError from '$lib/ui/InputError.svelte';
-	import { formatISO, parseISO } from 'date-fns';
+	import { formatISO, lightFormat, parseISO } from 'date-fns';
 	import { _ } from 'svelte-i18n';
 
 	export let data;
@@ -15,7 +15,8 @@
 		notifications.error($_(form.generalError));
 	}
 
-	let selectedCategory: SlotCategory | '' = (form?.values?.category as SlotCategory) ?? '';
+	let selectedCategory: SlotCategory | '' =
+		(form?.values?.category as SlotCategory) ?? data.duplicateSlot?.category ?? '';
 	let additionalCategoryFields: AdditionalCategoryField[] = [];
 	$: if (selectedCategory) {
 		getAdditionalCategoryFields(selectedCategory);
@@ -30,10 +31,11 @@
 		additionalCategoryFields = additionalFields ?? [];
 	}
 
-	let contacts: (string | null)[] = (form?.values?.contacts as string[] | undefined) ?? [null];
+	let contacts: (string | null)[] = (form?.values?.contacts as string[] | undefined) ??
+		data.duplicateSlot?.contacts.map((contact) => contact.id) ?? [null];
 
 	let loading = false;
-	const handleSubmit: SubmitFunction = ({data}) => {
+	const handleSubmit: SubmitFunction = ({ data }) => {
 		loading = true;
 		const [startTime, endTime] = updateDateFields();
 		data.set('start_time', startTime);
@@ -54,13 +56,19 @@
 		if (startTime) {
 			startTime = formatISO(parseISO(startTime));
 		}
-		
+
 		let endTime = endTimeEl.value;
 		if (endTime) {
 			endTime = formatISO(parseISO(endTime));
 		}
 
 		return [startTime, endTime] as const;
+	}
+
+	function formatDate(date: Date | undefined) {
+		if (!date) return undefined;
+		
+		return lightFormat(parseISO(date as unknown as string), "yyyy-MM-dd'T'HH:mm");
 	}
 </script>
 
@@ -81,7 +89,7 @@
 					<input
 						name="name"
 						type="text"
-						value={form?.values?.name ?? ''}
+						value={form?.values?.name ?? data.duplicateSlot?.name ?? ''}
 						class="input"
 						class:input-error={form?.errors?.name}
 					/>
@@ -109,7 +117,7 @@
 						bind:this={startTimeEl}
 						name="start_time"
 						type="datetime-local"
-						value={form?.values?.start_time ?? ''}
+						value={form?.values?.start_time ?? formatDate(data.duplicateSlot?.start_time) ?? ''}
 						class="input"
 						class:input-error={form?.errors?.start_time}
 					/>
@@ -121,7 +129,7 @@
 						bind:this={endTimeEl}
 						name="end_time"
 						type="datetime-local"
-						value={form?.values?.end_time ?? ''}
+						value={form?.values?.end_time ?? formatDate(data.duplicateSlot?.end_time) ?? ''}
 						class="input"
 						class:input-error={form?.errors?.end_time}
 					/>
@@ -134,7 +142,7 @@
 					<input
 						name="min_helpers"
 						type="number"
-						value={form?.values?.min_helpers ?? 0}
+						value={form?.values?.min_helpers ?? data.duplicateSlot?.min_helpers ?? 0}
 						class="input"
 						min={0}
 						class:input-error={form?.errors?.min_helpers}
@@ -146,7 +154,7 @@
 					<input
 						name="max_helpers"
 						type="number"
-						value={form?.values?.max_helpers ?? null}
+						value={form?.values?.max_helpers ?? data.duplicateSlot?.max_helpers ?? null}
 						class="input"
 						min={0}
 						class:input-error={form?.errors?.max_helpers}
@@ -201,7 +209,10 @@
 						<input
 							name="additional_field_{field.id}"
 							type="checkbox"
-							checked={form?.values.additional_fields.some((formField) => formField === field.id)}
+							checked={form?.values.additional_fields.some((formField) => formField === field.id) ??
+								data.duplicateSlot?.additional_fields.some(
+									(slotField) => slotField.id === field.id
+								)}
 							class="checkbox variant-ringed-primary"
 						/>
 						<p>

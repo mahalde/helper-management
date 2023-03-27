@@ -3,12 +3,12 @@
 	import { invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { notifications } from '$lib/stores';
-	import type { Modal as ModalType, Slot, SlotCategory } from '$lib/types';
+	import { PERMISSIONS, type Modal as ModalType, type Slot, type SlotCategory } from '$lib/types';
 	import { getDateFormatter, getTimeFormatter } from '$lib/utils';
 	import { isSameDay } from 'date-fns';
 	import { locale, _ } from 'svelte-i18n';
 	import Icon from './Icon.svelte';
-	import { catering, dressage, minus, obstacle, pencil_square, plus, trash } from './icons';
+	import { catering, document_duplicate, dressage, minus, obstacle, pencil_square, plus, trash } from './icons';
 	import Modal from './Modal.svelte';
 
 	export let slot: Slot;
@@ -79,6 +79,12 @@
 		{slot.name}
 	</span>
 	<div class="self-end flex gap-4 mt-2 flex-wrap justify-end">
+		{#if $page.data.permissions.includes(PERMISSIONS.SLOT_CREATE)}
+			<a class="btn btn-sm variant-ringed-secondary" href="/create-slot?duplicateSlotId={slot.id}">
+				<Icon icon={document_duplicate} viewBoxWidth={24} viewBoxHeight={24} />
+				<span>{$_('label.copy_slot')}</span>
+			</a>
+		{/if}
 		{#if isContact}
 			<form method="POST" action='/api?/delete_slot' use:enhance={handleSubmit}>
 				<input type="hidden" name="slot_id" value={slot.id} />
