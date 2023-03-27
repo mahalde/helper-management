@@ -122,7 +122,7 @@
 					<span><Icon icon={minus} viewBoxHeight={24} viewBoxWidth={24} /></span>
 					{$_('label.remove_helper')}
 				</button>
-			{:else}
+			{:else if !slot.max_helpers || slot.helpers.length < slot.max_helpers}
 				<button
 					type={needsAdditionalInformation() ? 'button' : 'submit'}
 					on:click={() => {
