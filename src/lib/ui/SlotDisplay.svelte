@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Slot, SortOption } from '$lib/types';
 	import { getDateFormatter } from '$lib/utils';
-	import { _, locale } from 'svelte-i18n';
+	import { locale, _ } from 'svelte-i18n';
 	import UISlot from './Slot.svelte';
 
 	export let slots: Slot[] | undefined;
@@ -23,8 +23,8 @@
 		if (sortOption.type === 'date') {
 			return dateFormatter.format(label as number);
 		} else if (sortOption.type === 'helpers_needed') {
-			return $_('label.num_of_helpers_needed', { values: { num: label }});
-		} 
+			return $_('label.num_of_helpers_needed', { values: { num: label } });
+		}
 		return $_(label as string);
 	}
 
@@ -38,10 +38,26 @@
 			} else if (sortOption.type === 'helpers_needed') {
 				assignToSortedSlots(slot.min_helpers - slot.helpers.length, slot);
 			} else if (sortOption.type === 'date') {
-				const date = new Date(slot.start_time.getFullYear(), slot.start_time.getMonth(), slot.start_time.getDate());
+				const date = new Date(
+					slot.start_time.getFullYear(),
+					slot.start_time.getMonth(),
+					slot.start_time.getDate()
+				);
 				assignToSortedSlots(date.valueOf(), slot);
 			}
 		});
+
+		for (const slots of sortedSlots.values()) {
+			slots.sort((slotA, slotB) => {
+				if (
+					slotA.start_time.getHours() === slotB.start_time.getHours() &&
+					slotA.start_time.getMinutes() === slotB.start_time.getMinutes()
+				) {
+					return slotA.name.localeCompare(slotB.name);
+				}
+				return 0;
+			});
+		}
 
 		sortedSlots = new Map(
 			[...sortedSlots].sort(([aKey], [bKey]) => {

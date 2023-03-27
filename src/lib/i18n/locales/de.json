@@ -48,7 +48,8 @@
 		"save": "Speichern",
 		"showjumping": "Springen",
 		"sort_by": "Sortieren nach",
-		"start_time": "Startzeit"
+		"start_time": "Startzeit",
+		"toggle_all": "Alle auswählen"
 	},
 	"layout": {
 		"headline": "Helfereinteilung 2023"

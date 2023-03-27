@@ -44,7 +44,8 @@
 		"remove_helper": "Remove as helper",
 		"save": "Save data",
 		"showjumping": "Showjumping",
-		"sort_by": "Sort by"
+		"sort_by": "Sort by",
+		"toggle_all": "Toggle all"
 	},
 	"layout": {
 		"headline": "Helper management 2023"

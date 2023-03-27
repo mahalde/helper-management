@@ -21,12 +21,12 @@
 
 	const slotMetadata = {
 		dates: new Set<string>(),
-		categories: new Set<SlotCategory>(),
+		categories: new Set<string>(),
 		names: new Set<string>()
 	};
 	let filters = {
 		dates: new Set<string>(),
-		categories: new Set<SlotCategory>(),
+		categories: new Set<string>(),
 		names: new Set<string>()
 	};
 	let filtered = false;
@@ -48,7 +48,7 @@
 			slotMetadata.names.add(slot.name);
 		});
 
-		slotMetadata.names = new Set([...slotMetadata.names].sort())
+		slotMetadata.names = new Set([...slotMetadata.names].sort());
 
 		yourSlots =
 			data.slots?.filter((slot) =>
@@ -64,10 +64,11 @@
 		}
 
 		filteredSlots =
-			data.slots?.filter((slot) =>
-				filters.dates.has(slot.start_time.toISOString().split('T')[0])
-				&& filters.categories.has(slot.category)
-				&& filters.names.has(slot.name)
+			data.slots?.filter(
+				(slot) =>
+					filters.dates.has(slot.start_time.toISOString().split('T')[0]) &&
+					filters.categories.has(slot.category) &&
+					filters.names.has(slot.name)
 			) ?? [];
 	}
 
@@ -87,6 +88,17 @@
 
 		filtered = true;
 		filterModal.hide();
+	}
+
+	function toggleFilter(event: Event, key: keyof typeof filters) {
+		const checkbox = event.target as HTMLInputElement;
+		if (checkbox.checked) {
+			filters[key] = new Set(slotMetadata[key]);
+		} else {
+			filters[key] = new Set();
+		}
+
+		filtered = true;
 	}
 </script>
 
@@ -145,6 +157,15 @@
 	<form on:submit|preventDefault={filterSlots} class="p-4 space-y-2 flex flex-col">
 		<p class="unstyled text-xl">{$_('label.date')}</p>
 		<div>
+			<label class="flex items-center gap-2 mb-2">
+				<input
+					type="checkbox"
+					checked={true}
+					class="checkbox variant-ringed-primary"
+					on:change={(event) => toggleFilter(event, 'dates')}
+				/>
+				<p>{$_('label.toggle_all')}</p>
+			</label>
 			{#each [...slotMetadata.dates] as date (date)}
 				<label class="flex items-center gap-2">
 					<input
@@ -161,6 +182,15 @@
 		<hr />
 		<p class="unstyled text-xl">{$_('label.category')}</p>
 		<div>
+			<label class="flex items-center gap-2 mb-2">
+				<input
+					type="checkbox"
+					checked={true}
+					class="checkbox variant-ringed-primary"
+					on:change={(event) => toggleFilter(event, 'categories')}
+				/>
+				<p>{$_('label.toggle_all')}</p>
+			</label>
 			{#each [...slotMetadata.categories] as category (category)}
 				<label class="flex items-center gap-2">
 					<input
@@ -177,6 +207,15 @@
 		<hr />
 		<p class="unstyled text-xl">{$_('label.name')}</p>
 		<div>
+			<label class="flex items-center gap-2 mb-2">
+				<input
+					type="checkbox"
+					checked={true}
+					class="checkbox variant-ringed-primary"
+					on:change={(event) => toggleFilter(event, 'names')}
+				/>
+				<p>{$_('label.toggle_all')}</p>
+			</label>
 			{#each [...slotMetadata.names] as name (name)}
 				<label class="flex items-center gap-2">
 					<input
