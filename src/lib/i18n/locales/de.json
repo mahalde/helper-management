@@ -1,7 +1,8 @@
 {
 	"component": {
 		"slot": {
-			"additional_fields": "Der Organisator benötigt für diesen Zeitslot zusätzliche Informationen von dir."
+			"additional_fields": "Der Organisator benötigt für diesen Zeitslot zusätzliche Informationen von dir.",
+			"additional_helper": "Hier kannst du als Organisator einen Helfer eintragen, der sich bei dir persönlich gemeldet hat und keinen Zugriff auf die Online-Helfereinteilung hat. Bitte gebe nur einen Helfer an. Lässt du diese Felder leer, trägst du dich selber als Helfer für diesen Zeitslot ein."
 		}
 	},
 	"errors": {
@@ -19,6 +20,7 @@
 	"label": {
 		"add_helper": "Als Helfer eintragen",
 		"additional_fields": "Zusätzliche Informationen",
+		"additional_helper": "Helfer",
 		"assigned_helpers": "Eingeteilte Helfer",
 		"category": "Kategorie",
 		"catering": "Catering",

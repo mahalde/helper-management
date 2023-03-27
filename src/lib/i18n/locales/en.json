@@ -1,7 +1,8 @@
 {
 	"component": {
 		"slot": {
-			"additional_fields": "The organizer needs some additional information from you for this time slot."
+			"additional_fields": "The organizer needs some additional information from you for this time slot.",
+			"additional_helper": "As an organiser, you can enter a helper here who has registered with you personally and does not have access to the online helper management. Please enter only one helper. If you don't fill in these fields, you assign yourself as helper for this slot."
 		}
 	},
 	"errors": {
@@ -19,6 +20,7 @@
 	"label": {
 		"add_helper": "Sign up as helper",
 		"additional_fields": "Additional information",
+		"additional_helper": "Additional helper",
 		"assigned_helpers": "Assigned helpers",
 		"category": "Category",
 		"catering": "Catering",

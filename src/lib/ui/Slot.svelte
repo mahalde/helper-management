@@ -23,9 +23,15 @@
 	const dateFormatter = getDateFormatter($locale, true);
 	const timeFormatter = getTimeFormatter($locale);
 
+	let isContact: boolean;
+	$: isContact = slot.contacts.some((contact) => contact.id === $page.data.session?.user.id);
 	let additionalFieldsModal: ModalType | undefined;
 	function needsAdditionalInformation(): boolean {
-		return slot.additional_fields.length > 0 && !alreadyHelper;
+		if (alreadyHelper) {
+			return false;
+		}
+
+		return isContact || (slot.additional_fields.length > 0 && !alreadyHelper);
 	}
 
 	let loading = false;
@@ -101,8 +107,22 @@
 		{#if needsAdditionalInformation()}
 			<Modal bind:modal={additionalFieldsModal}>
 				<div class="p-4 space-y-4 flex flex-col">
-					<p class="unstyled text-xl mb-2">{$_('label.additional_fields')}</p>
-					<p>{$_('component.slot.additional_fields')}</p>
+					{#if isContact}
+					<p class="unstyled text-xl mb-2">{$_('label.additional_helper')}</p>
+					<p>{$_('component.slot.additional_helper')}</p>
+						<label class="label">
+							<span>{$_('label.name')}</span>
+							<input type="text" name="additional_helper_name" class="input" />
+						</label>
+						<label class="label">
+							<span>{$_('label.phone')}</span>
+							<input type="text" name="additional_helper_phone" class="input" />
+						</label>
+					{/if}
+					{#if slot.additional_fields.length}
+						<p class="unstyled text-xl mb-2">{$_('label.additional_fields')}</p>
+						<p>{$_('component.slot.additional_fields')}</p>
+					{/if}
 					{#each slot.additional_fields as field (field.id)}
 						<label class="label">
 							<p>
