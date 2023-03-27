@@ -60,7 +60,7 @@
 <div class="flex flex-col gap-4">
 	{#if slots}
 		{#each [...sortedSlots] as [label, mapSlots] (label)}
-			<h4 class="mt-4">{showLabel(label)}</h4>
+			<h1 class="mt-16 mb-2">{showLabel(label)}</h1>
 			{#each mapSlots as slot (slot.id)}
 				<UISlot {slot} {withHelpers} />
 			{/each}
