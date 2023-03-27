@@ -28,6 +28,7 @@
 		"confirm_password": "Confirm password",
 		"contacts": "Contacts",
 		"copy_slot": "Duplicate slot",
+		"date": "Date",
 		"date.asc": "Date (ascending)",
 		"date.desc": "Date (descending)",
 		"delete": "Delete",
@@ -68,10 +69,12 @@
 		},
 		"dashboard": {
 			"all_times": "All timeslots",
+			"apply_filter": "Apply filter",
 			"create_slot": "Create timeslot",
 			"your_times": "Your timeslots",
 			"no_times": "No timeslots available",
-			"no_times_chosen": "No timeslots chosen"
+			"no_times_chosen": "No timeslots chosen",
+			"show_filter": "Filter"
 		},
 		"edit_slot": {
 			"headline": "Edit timeslot"

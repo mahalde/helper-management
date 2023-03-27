@@ -28,6 +28,7 @@
 		"confirm_password": "Passwort bestätigen",
 		"contacts": "Ansprechpartner",
 		"copy_slot": "Slot duplizieren",
+		"date": "Datum",
 		"date.asc": "Datum (aufsteigend)",
 		"date.desc": "Datum (absteigend)",
 		"delete": "Löschen",
@@ -72,10 +73,12 @@
 		},
 		"dashboard": {
 			"all_times": "Alle Arbeitszeiten",
+			"apply_filter": "Filter anwenden",
 			"create_slot": "Zeitslot erstellen",
 			"your_times": "Deine Arbeitszeiten",
 			"no_times": "Keine Zeiten vorhanden",
-			"no_times_chosen": "Keine Zeiten ausgewählt"
+			"no_times_chosen": "Keine Zeiten ausgewählt",
+			"show_filter": "Filtern"
 		},
 		"edit_slot": {
 			"headline": "Zeitslot bearbeiten"
