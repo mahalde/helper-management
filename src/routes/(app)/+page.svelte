@@ -102,7 +102,7 @@
 	}
 </script>
 
-<div class="my-4 w-fit mx-2 sm:mx-auto">
+<div class="my-4 w-fit mx-2 md:mx-auto">
 	{#if data.permissions.includes(PERMISSIONS.SLOT_CREATE)}
 		<a href="/create-slot" class="btn variant-filled-primary mb-8"
 			>{$_('page.dashboard.create_slot')}</a
@@ -122,8 +122,8 @@
 			{$_('page.dashboard.all_times')}
 		</h4>
 		{#if data.slots?.length}
-			<label class="label">
-				<div class="flex text-gray-500 dark:text-gray-200 gap-1">
+			<label class="flex sm:flex-col">
+				<div class="flex gap-1">
 					<Icon icon={adjustments_horizontal} viewBoxHeight={24} viewBoxWidth={24} />
 					{$_('label.sort_by')}
 				</div>
@@ -139,7 +139,7 @@
 			<button
 				type="button"
 				on:click={filterModal.show}
-				class="btn btn-sm variant-ringed-secondary w-fit"
+				class="btn btn-sm variant-filled-primary"
 			>
 				<Icon icon={funnel} viewBoxHeight={24} viewBoxWidth={24} />
 				<span>{$_('page.dashboard.show_filter')}</span>

@@ -8,7 +8,16 @@
 	import { isSameDay } from 'date-fns';
 	import { locale, _ } from 'svelte-i18n';
 	import Icon from './Icon.svelte';
-	import { catering, document_duplicate, dressage, minus, obstacle, pencil_square, plus, trash } from './icons';
+	import {
+		catering,
+		document_duplicate,
+		dressage,
+		minus,
+		obstacle,
+		pencil_square,
+		plus,
+		trash
+	} from './icons';
 	import Modal from './Modal.svelte';
 
 	export let slot: Slot;
@@ -18,6 +27,12 @@
 		catering,
 		dressage,
 		showjumping: obstacle
+	};
+
+	const borderColorMap: Record<SlotCategory, string> = {
+		catering: 'border-l-primary-500',
+		dressage: 'border-l-secondary-500',
+		showjumping: 'border-l-success-500'
 	};
 
 	const dateFormatter = getDateFormatter($locale, true);
@@ -62,7 +77,11 @@
 	$: alreadyHelper = slot.helpers.some((helper) => helper.id === $page.data.session?.user.id);
 </script>
 
-<div class="border border-gray-300 rounded-md flex flex-col p-2 shadow-sm">
+<div
+	class="border border-gray-300 {borderColorMap[
+		slot.category
+	]} border-l-8 rounded-md flex flex-col p-2 shadow-sm"
+>
 	<div class="flex items-center text-gray-500 dark:text-gray-300 gap-2">
 		<Icon
 			icon={iconMap[slot.category]}
@@ -86,15 +105,21 @@
 			</a>
 		{/if}
 		{#if isContact}
-			<form method="POST" action='/api?/delete_slot' use:enhance={handleSubmit}>
+			<form method="POST" action="/api?/delete_slot" use:enhance={handleSubmit}>
 				<input type="hidden" name="slot_id" value={slot.id} />
-				<button type="button" on:click={confirmDeleteModal?.show} class="btn btn-sm variant-ringed-error">
+				<button
+					type="button"
+					on:click={confirmDeleteModal?.show}
+					class="btn btn-sm variant-ringed-error"
+				>
 					<Icon icon={trash} viewBoxHeight={24} viewBoxWidth={24} />
 					<span>{$_('label.delete')}</span>
 				</button>
 				<Modal bind:modal={confirmDeleteModal}>
 					<div class="p-4 space-y-4 flex flex-col">
-						<p class="unstyled text-xl pr-4">{$_('component.slot.confirm_delete', { values: { name: slot.name }})}</p>
+						<p class="unstyled text-xl pr-4">
+							{$_('component.slot.confirm_delete', { values: { name: slot.name } })}
+						</p>
 						<button type="submit" class="btn variant-filled-error">
 							<Icon icon={trash} viewBoxHeight={24} viewBoxWidth={24} />
 							<span>{$_('label.delete')}</span>
@@ -139,8 +164,8 @@
 				<Modal bind:modal={additionalFieldsModal}>
 					<div class="p-4 space-y-4 flex flex-col">
 						{#if isContact}
-						<p class="unstyled text-xl mb-2">{$_('label.additional_helper')}</p>
-						<p>{$_('component.slot.additional_helper')}</p>
+							<p class="unstyled text-xl mb-2">{$_('label.additional_helper')}</p>
+							<p>{$_('component.slot.additional_helper')}</p>
 							<label class="label">
 								<span>{$_('label.name')}</span>
 								<input type="text" name="additional_helper_name" class="input" />
@@ -193,20 +218,25 @@
 			{/each}
 		</div>
 	{/if}
-	{#if withHelpers && slot.helpers.length}
+	{#if withHelpers}
 		<hr class="my-2" />
-		<span class="text-gray-500 dark:text-gray-300 mb-2">
-			{$_('label.assigned_helpers')}
+		<span class="mb-2">
+			{#if slot.helpers.length}
+				{$_('label.assigned_helpers')}
+			{/if}
 			{#if slot.helpers.length < slot.min_helpers}
-				({$_('label.num_of_helpers_needed', {
+				{#if slot.helpers.length}
+					&verbar;
+				{/if}
+				{$_('label.num_of_helpers_needed', {
 					values: { num: slot.min_helpers - slot.helpers.length }
-				})})
+				})}
 			{:else if slot.max_helpers}
 				({slot.helpers.length}/{slot.max_helpers})
 			{/if}
 		</span>
 		{#each slot.helpers as helper (helper.id)}
-			<p class="text-gray-500 dark:text-gray-300">{helper.name}</p>
+			<p>{helper.name}</p>
 		{/each}
 	{/if}
 </div>
