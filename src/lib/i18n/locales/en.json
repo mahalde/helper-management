@@ -35,6 +35,9 @@
 		"dressage": "Dressage",
 		"edit": "Edit",
 		"email": "E-Mail address",
+		"empty_helper_slots": "Partially staffed timeslots",
+		"end_time": "End time",
+		"full_slot": "Fully staffed timeslots",
 		"helpers_needed": "Helpers needed",
 		"log_out": "Log out",
 		"name": "Full name",
@@ -45,6 +48,7 @@
 		"save": "Save data",
 		"showjumping": "Showjumping",
 		"sort_by": "Sort by",
+		"start_time": "Start time",
 		"toggle_all": "Toggle all"
 	},
 	"layout": {

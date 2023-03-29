@@ -20,15 +20,40 @@
 	let filteredSlots: Slot[] = [];
 
 	const slotMetadata = {
+		helpersNeeded: new Set<string>(['true', 'false']),
 		dates: new Set<string>(),
 		categories: new Set<string>(),
 		names: new Set<string>()
 	};
-	let filters = {
+	let filters: Record<keyof typeof slotMetadata, Set<string>> = {
+		helpersNeeded: new Set<string>(),
 		dates: new Set<string>(),
 		categories: new Set<string>(),
 		names: new Set<string>()
 	};
+	const filterEntry: { key: keyof typeof slotMetadata, label: string, displayFn: (entry: string) => string }[] = 
+	[
+		{
+			key: 'helpersNeeded',
+			label: 'helpers_needed',
+			displayFn: (hasHelpers) => $_(`label.${hasHelpers === 'true' ? 'empty_helper_slots' : 'full_slot'}`)
+		},
+		{
+			key: 'dates',
+			label: 'date',
+			displayFn: date => dateFormatter.format(new Date(date as string))
+		},
+		{
+			key: 'categories',
+			label: 'category',
+			displayFn: category => $_(`label.${category}`)
+		},
+		{
+			key: 'names',
+			label: 'name',
+			displayFn: name => name as string,
+		}
+	];
 	let filtered = false;
 
 	const dateFormatter = getDateFormatter($locale);
@@ -58,6 +83,7 @@
 
 	$: {
 		if (!filtered) {
+			filters.helpersNeeded = new Set(slotMetadata.helpersNeeded);
 			filters.dates = new Set(slotMetadata.dates);
 			filters.categories = new Set(slotMetadata.categories);
 			filters.names = new Set(slotMetadata.names);
@@ -66,6 +92,7 @@
 		filteredSlots =
 			data.slots?.filter(
 				(slot) =>
+					filters.helpersNeeded.has((slot.helpers.length < (slot.max_helpers ?? Infinity)).toString()) &&
 					filters.dates.has(slot.start_time.toISOString().split('T')[0]) &&
 					filters.categories.has(slot.category) &&
 					filters.names.has(slot.name)
@@ -76,15 +103,10 @@
 
 	function filterSlots(event: SubmitEvent) {
 		const formData = new FormData(event.target as HTMLFormElement);
-
-		const dates = formData.getAll('dates') as string[];
-		filters.dates = new Set(dates);
-
-		const categories = formData.getAll('categories') as SlotCategory[];
-		filters.categories = new Set(categories);
-
-		const names = formData.getAll('names') as string[];
-		filters.names = new Set(names);
+		for (const key of Object.keys(slotMetadata)) {
+			const entries = formData.getAll(key) as string[];
+			filters[key as keyof typeof slotMetadata] = new Set(entries);
+		}
 
 		filtered = true;
 		filterModal.hide();
@@ -93,7 +115,7 @@
 	function toggleFilter(event: Event, key: keyof typeof filters) {
 		const checkbox = event.target as HTMLInputElement;
 		if (checkbox.checked) {
-			filters[key] = new Set(slotMetadata[key]);
+			filters[key] = new Set(slotMetadata[key] as Set<string>);
 		} else {
 			filters[key] = new Set();
 		}
@@ -155,80 +177,33 @@
 
 <Modal bind:modal={filterModal}>
 	<form on:submit|preventDefault={filterSlots} class="p-4 space-y-2 flex flex-col">
-		<p class="unstyled text-xl">{$_('label.date')}</p>
-		<div>
-			<label class="flex items-center gap-2 mb-2">
+		{#each filterEntry as entry (entry.key)}
+			<p class="unstyled text-xl">{$_(`label.${entry.label}`)}</p>
+			<div class="flex items-center gap-2 mb-2">
 				<input
 					type="checkbox"
 					checked={true}
 					class="checkbox variant-ringed-primary"
-					on:change={(event) => toggleFilter(event, 'dates')}
+					on:change={(event) => toggleFilter(event, entry.key)}
 				/>
 				<p>{$_('label.toggle_all')}</p>
-			</label>
-			{#each [...slotMetadata.dates] as date (date)}
+			</div>
+			<div>
+				{#each [...slotMetadata[entry.key]] as metadata (metadata)}
 				<label class="flex items-center gap-2">
 					<input
 						type="checkbox"
-						name="dates"
-						value={date}
+						name={entry.key}
+						value={metadata}
 						class="checkbox variant-ringed-primary"
-						checked={filters.dates.has(date)}
+						checked={filters[entry.key].has(metadata)}
 					/>
-					<p>{dateFormatter.format(new Date(date))}</p>
+					<p>{entry.displayFn(metadata)}</p>
 				</label>
-			{/each}
-		</div>
-		<hr />
-		<p class="unstyled text-xl">{$_('label.category')}</p>
-		<div>
-			<label class="flex items-center gap-2 mb-2">
-				<input
-					type="checkbox"
-					checked={true}
-					class="checkbox variant-ringed-primary"
-					on:change={(event) => toggleFilter(event, 'categories')}
-				/>
-				<p>{$_('label.toggle_all')}</p>
-			</label>
-			{#each [...slotMetadata.categories] as category (category)}
-				<label class="flex items-center gap-2">
-					<input
-						type="checkbox"
-						name="categories"
-						value={category}
-						class="checkbox variant-ringed-primary"
-						checked={filters.categories.has(category)}
-					/>
-					<p>{$_(`label.${category}`)}</p>
-				</label>
-			{/each}
-		</div>
-		<hr />
-		<p class="unstyled text-xl">{$_('label.name')}</p>
-		<div>
-			<label class="flex items-center gap-2 mb-2">
-				<input
-					type="checkbox"
-					checked={true}
-					class="checkbox variant-ringed-primary"
-					on:change={(event) => toggleFilter(event, 'names')}
-				/>
-				<p>{$_('label.toggle_all')}</p>
-			</label>
-			{#each [...slotMetadata.names] as name (name)}
-				<label class="flex items-center gap-2">
-					<input
-						type="checkbox"
-						name="names"
-						value={name}
-						class="checkbox variant-ringed-primary"
-						checked={filters.names.has(name)}
-					/>
-					<p>{name}</p>
-				</label>
-			{/each}
-		</div>
+				{/each}
+			</div>
+			<hr />
+		{/each}
 		<button type="submit" class="btn btn-sm variant-filled-primary">
 			<Icon icon={funnel} viewBoxHeight={24} viewBoxWidth={24} />
 			<span>{$_('page.dashboard.apply_filter')}</span>
