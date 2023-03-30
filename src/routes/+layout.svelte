@@ -1,10 +1,14 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import { notifications } from '$lib/stores';
 	import Alert from '$lib/ui/Alert.svelte';
 	import '@skeletonlabs/skeleton/styles/all.css';
+	import { inject } from '@vercel/analytics';
 	import { fly } from 'svelte/transition';
 	import '../app.css';
 	import '../theme.css';
+
+	inject({ mode: dev ? 'development' : 'production' });
 </script>
 
 <svelte:head>
