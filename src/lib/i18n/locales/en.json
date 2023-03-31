@@ -3,6 +3,7 @@
 		"slot": {
 			"additional_fields": "The organizer needs some additional information from you for this time slot.",
 			"additional_helper": "As an organiser, you can enter a helper here who has registered with you personally and does not have access to the online helper management. Please enter only one helper. If you don't fill in these fields, you assign yourself as helper for this slot.",
+			"additional_helper_info": "Additional helper information",
 			"confirm_delete": "Do you really want to delete timeslot \"{name}\"?"
 		}
 	},
@@ -42,6 +43,7 @@
 		"log_out": "Log out",
 		"name": "Full name",
 		"num_of_helpers_needed": "Still {num} helper(s) needed",
+		"optional": "Optional",
 		"password": "Password",
 		"phone": "Phone number",
 		"remove_helper": "Remove as helper",

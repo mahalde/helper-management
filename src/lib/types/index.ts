@@ -65,6 +65,6 @@ export enum PERMISSIONS {
 };
 
 export interface Modal {
-	show(): void;
+	show(data?: unknown): void;
 	hide(): void;
 }

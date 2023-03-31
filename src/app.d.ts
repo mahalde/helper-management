@@ -11,6 +11,7 @@ declare global {
 			getSession(): Promise<Session | null>;
 		}
 		interface PageData {
+			supabase: SupabaseClient;
 			session: Session | null;
 			permissions: string[];
 		}

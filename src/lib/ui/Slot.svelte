@@ -9,14 +9,18 @@
 	import { locale, _ } from 'svelte-i18n';
 	import Icon from './Icon.svelte';
 	import {
+		calendar,
 		catering,
+		chevron_right,
 		document_duplicate,
 		dressage,
+		information_circle,
 		minus,
 		obstacle,
 		pencil_square,
 		plus,
-		trash
+		trash,
+		user_circle
 	} from './icons';
 	import Modal from './Modal.svelte';
 
@@ -49,6 +53,25 @@
 		}
 
 		return isContact || (slot.additional_fields.length > 0 && !alreadyHelper);
+	}
+
+	let additionalHelperInfoModal: ModalType | undefined;
+	async function fetchAdditionalHelperInfo() {
+		const { data } = await $page.data.supabase
+			.from('selected_slots')
+			.select('user_id,selected_on,additional_field_data')
+			.eq('slot_id', slot.id)
+			.in(
+				'user_id',
+				slot.helpers.map((helper) => helper.id)
+			);
+
+		const information = data?.map((row) => ({
+			helper: slot.helpers.find((helper) => helper.id === row.user_id),
+			selected_on: new Date(row.selected_on),
+			information: row.additional_field_data
+		}));
+		additionalHelperInfoModal?.show(information);
 	}
 
 	let loading = false;
@@ -99,6 +122,15 @@
 	</span>
 	<div class="self-end flex gap-4 mt-2 flex-wrap justify-end">
 		{#if $page.data.permissions.includes(PERMISSIONS.SLOT_CREATE)}
+			{#if slot.helpers.length}
+				<button
+					type="button"
+					on:click={fetchAdditionalHelperInfo}
+					class="btn btn-sm variant-ringed-secondary"
+				>
+					<Icon icon={information_circle} viewBoxHeight={24} viewBoxWidth={24} />
+				</button>
+			{/if}
 			<a class="btn btn-sm variant-ringed-secondary" href="/create-slot?duplicateSlotId={slot.id}">
 				<Icon icon={document_duplicate} viewBoxWidth={24} viewBoxHeight={24} />
 				<span>{$_('label.copy_slot')}</span>
@@ -240,3 +272,36 @@
 		{/each}
 	{/if}
 </div>
+
+{#if $page.data.permissions.includes(PERMISSIONS.SLOT_CREATE) && slot.helpers.length}
+	<Modal bind:modal={additionalHelperInfoModal} let:data>
+		<div class="p-4 pr-16">
+			<h2>{$_('component.slot.additional_helper_info')}</h2>
+			{#each data ?? [] as informationRow (informationRow.helper.id)}
+				<div class="mt-8 text-gray-500 mb-2">
+					<div class="flex gap-2">
+						<Icon icon={user_circle} viewBoxHeight={24} viewBoxWidth={24} />
+						{informationRow.helper.name}
+					</div>
+					<div class="flex gap-2">
+						<Icon icon={calendar} viewBoxHeight={24} viewBoxWidth={24} />
+						{dateFormatter.format(informationRow.selected_on)}
+					</div>
+				</div>
+				{#each slot.additional_fields as field (field.id)}
+					<div class="flex flex-col mb-4">
+						<div class="flex flex-row items-center">
+							<Icon icon={chevron_right} viewBoxHeight={24} viewBoxWidth={24} size={16} />
+							{field.name}: {field.description}
+							{field.optional ? `(${$_('label.optional')})` : ''}
+						</div>
+						<span
+							>{informationRow?.information.find((info) => info.key === field.id)?.value ??
+								$_('label.no_answer')}</span
+						>
+					</div>
+				{/each}
+			{/each}
+		</div>
+	</Modal>
+{/if}

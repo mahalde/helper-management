@@ -1,8 +1,6 @@
 <script lang="ts">
 	import {
-		PERMISSIONS,
-		SlotCategory,
-		type Modal as ModalType,
+		PERMISSIONS, type Modal as ModalType,
 		type Slot,
 		type SortOption
 	} from '$lib/types';

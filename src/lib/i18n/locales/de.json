@@ -3,6 +3,7 @@
 		"slot": {
 			"additional_fields": "Der Organisator benötigt für diesen Zeitslot zusätzliche Informationen von dir.",
 			"additional_helper": "Hier kannst du als Organisator einen Helfer eintragen, der sich bei dir persönlich gemeldet hat und keinen Zugriff auf die Online-Helfereinteilung hat. Bitte gebe nur einen Helfer an. Lässt du diese Felder leer, trägst du dich selber als Helfer für diesen Zeitslot ein.",
+			"additional_helper_info": "Zusätzliche Helferinformationen",
 			"confirm_delete": "Möchtest du den Zeitslot \"{name}\" wirklich löschen?"
 		}
 	},
@@ -44,6 +45,7 @@
 		"min_helpers": "Minimale Anzahl von Helfern",
 		"name": "Name",
 		"num_of_helpers_needed": "Noch {num} Helfer benötigt",
+		"optional": "Optional",
 		"password": "Passwort",
 		"phone": "Mobile Telefonnummer",
 		"remove_helper": "Als Helfer entfernen",

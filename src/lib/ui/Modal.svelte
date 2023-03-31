@@ -3,16 +3,17 @@
 	import { x_mark } from './icons';
 
 	export const modal = {
-		show() {
+		show(data?: unknown) {
+			modalData = data;
 			modalEl.setAttribute('aria-hidden', 'false');
 			modalEl.classList.remove('hidden');
 		},
 		hide() {
 			modalEl.setAttribute('aria-hidden', 'true');
 			modalEl.classList.add('hidden');
-		}
+		},
 	};
-
+	let modalData: any | undefined;
 	let modalEl: HTMLDivElement;
 </script>
 
@@ -25,7 +26,7 @@
 			<button type="button" on:click|preventDefault={modal.hide} class="absolute right-3 top-3">
 				<Icon icon={x_mark} viewBoxHeight={24} viewBoxWidth={24} size={32} />
 			</button>
-			<slot />
+			<slot data={modalData} />
 		</div>
 	</div>
 </div>
