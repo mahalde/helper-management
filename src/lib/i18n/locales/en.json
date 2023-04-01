@@ -41,6 +41,8 @@
 		"full_slot": "Fully staffed timeslots",
 		"helpers_needed": "Helpers needed",
 		"log_out": "Log out",
+		"max_helpers": "Maximum number of helpers (optional)",
+		"min_helpers": "Minimum number of helpers",
 		"name": "Full name",
 		"num_of_helpers_needed": "Still {num} helper(s) needed",
 		"optional": "Optional",
