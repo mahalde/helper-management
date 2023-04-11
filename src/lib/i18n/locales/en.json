@@ -80,10 +80,11 @@
 			"all_times": "All timeslots",
 			"apply_filter": "Apply filter",
 			"create_slot": "Create timeslot",
-			"your_times": "Your timeslots",
+			"download_slots": "Download slots",
 			"no_times": "No timeslots available",
 			"no_times_chosen": "No timeslots chosen",
-			"show_filter": "Filter"
+			"show_filter": "Filter",
+			"your_times": "Your timeslots"
 		},
 		"edit_slot": {
 			"headline": "Edit timeslot"

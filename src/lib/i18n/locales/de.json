@@ -80,10 +80,11 @@
 			"all_times": "Alle Arbeitszeiten",
 			"apply_filter": "Filter anwenden",
 			"create_slot": "Zeitslot erstellen",
-			"your_times": "Deine Arbeitszeiten",
+			"download_slots": "Zeitslots herunterladen",
 			"no_times": "Keine Zeiten vorhanden",
 			"no_times_chosen": "Keine Zeiten ausgewählt",
-			"show_filter": "Filtern"
+			"show_filter": "Filtern",
+			"your_times": "Deine Arbeitszeiten"
 		},
 		"edit_slot": {
 			"headline": "Zeitslot bearbeiten"

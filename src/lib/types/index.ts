@@ -48,6 +48,17 @@ export const Slot = z.object({
 });
 export type Slot = z.infer<typeof Slot>;
 
+export const SlotForOrganizer = Slot.extend({
+	contacts: z.array(z.string()),
+	helpers: z.array(Helper.extend({
+		additional_field_data: z.array(z.object({
+			key: z.number(),
+			value: z.string(),
+		})),
+	}))
+});
+export type SlotForOrganizer = z.infer<typeof SlotForOrganizer>;
+
 export type SortOption =
 	| {
 			type: 'date';

@@ -1,9 +1,5 @@
 <script lang="ts">
-	import {
-		PERMISSIONS, type Modal as ModalType,
-		type Slot,
-		type SortOption
-	} from '$lib/types';
+	import { PERMISSIONS, type Modal as ModalType, type Slot, type SortOption } from '$lib/types';
 	import Icon from '$lib/ui/Icon.svelte';
 	import { adjustments_horizontal, funnel } from '$lib/ui/icons';
 	import Modal from '$lib/ui/Modal.svelte';
@@ -29,27 +25,31 @@
 		categories: new Set<string>(),
 		names: new Set<string>()
 	};
-	const filterEntry: { key: keyof typeof slotMetadata, label: string, displayFn: (entry: string) => string }[] = 
-	[
+	const filterEntry: {
+		key: keyof typeof slotMetadata;
+		label: string;
+		displayFn: (entry: string) => string;
+	}[] = [
 		{
 			key: 'helpersNeeded',
 			label: 'helpers_needed',
-			displayFn: (hasHelpers) => $_(`label.${hasHelpers === 'true' ? 'empty_helper_slots' : 'full_slot'}`)
+			displayFn: (hasHelpers) =>
+				$_(`label.${hasHelpers === 'true' ? 'empty_helper_slots' : 'full_slot'}`)
 		},
 		{
 			key: 'dates',
 			label: 'date',
-			displayFn: date => dateFormatter.format(new Date(date as string))
+			displayFn: (date) => dateFormatter.format(new Date(date as string))
 		},
 		{
 			key: 'categories',
 			label: 'category',
-			displayFn: category => $_(`label.${category}`)
+			displayFn: (category) => $_(`label.${category}`)
 		},
 		{
 			key: 'names',
 			label: 'name',
-			displayFn: name => name as string,
+			displayFn: (name) => name as string
 		}
 	];
 	let filtered = false;
@@ -90,7 +90,9 @@
 		filteredSlots =
 			data.slots?.filter(
 				(slot) =>
-					filters.helpersNeeded.has((slot.helpers.length < (slot.max_helpers ?? Infinity)).toString()) &&
+					filters.helpersNeeded.has(
+						(slot.helpers.length < (slot.max_helpers ?? Infinity)).toString()
+					) &&
 					filters.dates.has(slot.start_time.toISOString().split('T')[0]) &&
 					filters.categories.has(slot.category) &&
 					filters.names.has(slot.name)
@@ -124,9 +126,14 @@
 
 <div class="my-4 w-fit mx-2 md:mx-auto">
 	{#if data.permissions.includes(PERMISSIONS.SLOT_CREATE)}
-		<a href="/create-slot" class="btn variant-filled-primary mb-8"
-			>{$_('page.dashboard.create_slot')}</a
-		>
+		<div class="flex flex-wrap gap-4 mb-8">
+			<a href="/create-slot" class="btn variant-filled-primary"
+				>{$_('page.dashboard.create_slot')}</a
+			>
+			<a href="/download-data" class="btn variant-ringed-secondary"
+				>{$_('page.dashboard.download_slots')}
+			</a>
+		</div>
 	{/if}
 	<h4 class="dark:text-gray-200 uppercase tracking-wide text-gray-500">
 		{$_('page.dashboard.your_times')}
@@ -156,11 +163,7 @@
 					{/each}
 				</select>
 			</label>
-			<button
-				type="button"
-				on:click={filterModal.show}
-				class="btn btn-sm variant-filled-primary"
-			>
+			<button type="button" on:click={filterModal.show} class="btn btn-sm variant-filled-primary">
 				<Icon icon={funnel} viewBoxHeight={24} viewBoxWidth={24} />
 				<span>{$_('page.dashboard.show_filter')}</span>
 			</button>
@@ -188,16 +191,16 @@
 			</div>
 			<div>
 				{#each [...slotMetadata[entry.key]] as metadata (metadata)}
-				<label class="flex items-center gap-2">
-					<input
-						type="checkbox"
-						name={entry.key}
-						value={metadata}
-						class="checkbox variant-ringed-primary"
-						checked={filters[entry.key].has(metadata)}
-					/>
-					<p>{entry.displayFn(metadata)}</p>
-				</label>
+					<label class="flex items-center gap-2">
+						<input
+							type="checkbox"
+							name={entry.key}
+							value={metadata}
+							class="checkbox variant-ringed-primary"
+							checked={filters[entry.key].has(metadata)}
+						/>
+						<p>{entry.displayFn(metadata)}</p>
+					</label>
 				{/each}
 			</div>
 			<hr />
