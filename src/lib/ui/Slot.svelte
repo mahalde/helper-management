@@ -135,8 +135,6 @@
 				<Icon icon={document_duplicate} viewBoxWidth={24} viewBoxHeight={24} />
 				<span>{$_('label.copy_slot')}</span>
 			</a>
-		{/if}
-		{#if isContact}
 			<form method="POST" action="/api?/delete_slot" use:enhance={handleSubmit}>
 				<input type="hidden" name="slot_id" value={slot.id} />
 				<button

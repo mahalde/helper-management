@@ -45,7 +45,7 @@
 		}
 	];
 	let filtered = false;
-	let showFullSlots = false;
+	let showFullSlots = true;
 
 	const dateFormatter = getDateFormatter($locale);
 
