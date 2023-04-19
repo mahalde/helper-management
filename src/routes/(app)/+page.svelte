@@ -82,7 +82,7 @@
 		filteredSlots =
 			data.slots?.filter(
 				(slot) =>
-					showFullSlots ? true : slot.helpers.length < (slot.max_helpers ?? Infinity) &&
+					(showFullSlots ? true : slot.helpers.length < (slot.max_helpers ?? Infinity)) &&
 					filters.dates.has(slot.start_time.toISOString().split('T')[0]) &&
 					filters.categories.has(slot.category) &&
 					filters.names.has(slot.name)
