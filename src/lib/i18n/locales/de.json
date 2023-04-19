@@ -84,6 +84,7 @@
 			"no_times": "Keine Zeiten vorhanden",
 			"no_times_chosen": "Keine Zeiten ausgewählt",
 			"show_filter": "Filtern",
+			"show_full_slots": "Voll besetzte Arbeitszeiten anzeigen",
 			"your_times": "Deine Arbeitszeiten"
 		},
 		"edit_slot": {

@@ -14,13 +14,11 @@
 	let filteredSlots: Slot[] = [];
 
 	const slotMetadata = {
-		helpersNeeded: new Set<string>(['true', 'false']),
 		dates: new Set<string>(),
 		categories: new Set<string>(),
 		names: new Set<string>()
 	};
 	let filters: Record<keyof typeof slotMetadata, Set<string>> = {
-		helpersNeeded: new Set<string>(),
 		dates: new Set<string>(),
 		categories: new Set<string>(),
 		names: new Set<string>()
@@ -30,12 +28,6 @@
 		label: string;
 		displayFn: (entry: string) => string;
 	}[] = [
-		{
-			key: 'helpersNeeded',
-			label: 'helpers_needed',
-			displayFn: (hasHelpers) =>
-				$_(`label.${hasHelpers === 'true' ? 'empty_helper_slots' : 'full_slot'}`)
-		},
 		{
 			key: 'dates',
 			label: 'date',
@@ -53,6 +45,7 @@
 		}
 	];
 	let filtered = false;
+	let showFullSlots = false;
 
 	const dateFormatter = getDateFormatter($locale);
 
@@ -81,7 +74,6 @@
 
 	$: {
 		if (!filtered) {
-			filters.helpersNeeded = new Set(slotMetadata.helpersNeeded);
 			filters.dates = new Set(slotMetadata.dates);
 			filters.categories = new Set(slotMetadata.categories);
 			filters.names = new Set(slotMetadata.names);
@@ -90,9 +82,7 @@
 		filteredSlots =
 			data.slots?.filter(
 				(slot) =>
-					filters.helpersNeeded.has(
-						(slot.helpers.length < (slot.max_helpers ?? Infinity)).toString()
-					) &&
+					showFullSlots ? true : slot.helpers.length < (slot.max_helpers ?? Infinity) &&
 					filters.dates.has(slot.start_time.toISOString().split('T')[0]) &&
 					filters.categories.has(slot.category) &&
 					filters.names.has(slot.name)
@@ -167,6 +157,14 @@
 				<Icon icon={funnel} viewBoxHeight={24} viewBoxWidth={24} />
 				<span>{$_('page.dashboard.show_filter')}</span>
 			</button>
+			<div class="flex items-center gap-2 mb-2">
+				<input
+					type="checkbox"
+					bind:checked={showFullSlots}
+					class="checkbox variant-ringed-primary"
+				/>
+				<p>{$_('page.dashboard.show_full_slots')}</p>
+			</div>
 		{/if}
 	</div>
 	{#if filteredSlots?.length}

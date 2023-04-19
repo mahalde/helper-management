@@ -84,6 +84,7 @@
 			"no_times": "No timeslots available",
 			"no_times_chosen": "No timeslots chosen",
 			"show_filter": "Filter",
+			"show_full_slots": "Show fully staffed time slots",
 			"your_times": "Your timeslots"
 		},
 		"edit_slot": {
