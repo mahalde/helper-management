@@ -12,6 +12,7 @@ interface FormattedSlot {
 
 interface Helper {
 	name: string;
+	phone: string;
 	additional_data: { name: string; value: string }[];
 }
 
@@ -47,6 +48,7 @@ export async function GET({ locals: { supabase, getSession } }) {
 
 			return {
 				name: helper.name,
+				phone: helper.phone,
 				additional_data
 			};
 		})
@@ -126,17 +128,17 @@ function formatSlotsForDisplay(slots: FormattedSlot[]): string[][] {
 function formatSlotRow(slot: FormattedSlot): string[] {
 	const timeRange = timeFormatter.formatRange(slot.start_time, slot.end_time);
 	const helper = slot.helpers[0];
-	return [slot.name, timeRange, helper?.name, formatAdditionalData(helper?.additional_data[0])];
+	return [slot.name, timeRange, helper?.name, helper?.phone, formatAdditionalData(helper?.additional_data[0])];
 }
 
 function formatHelperRow(helper: Helper, skipFirstRow?: boolean): string[][] {
 	const rows: string[][] = [];
 	if (!skipFirstRow) {
-		rows.push(['', '', helper.name, formatAdditionalData(helper.additional_data[0])]);
+		rows.push(['', '', helper.name, helper.phone, formatAdditionalData(helper.additional_data[0])]);
 	}
 
 	for (const additionalData of helper.additional_data.slice(1)) {
-		rows.push(['', '', '', formatAdditionalData(additionalData)]);
+		rows.push(['', '', '', '', formatAdditionalData(additionalData)]);
 	}
 
 	return rows;

@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { applyAction, enhance, type SubmitFunction } from '$app/forms';
+	import { invalidate } from '$app/navigation';
 	import { notifications } from '$lib/stores';
-	import { SlotCategory, type AdditionalCategoryField } from '$lib/types';
+	import { SlotCategory, type AdditionalCategoryField, type Modal as ModalType } from '$lib/types';
 	import Icon from '$lib/ui/Icon.svelte';
-	import { minus, plus } from '$lib/ui/icons';
+	import { minus, plus, trash, x_mark } from '$lib/ui/icons';
 	import InputError from '$lib/ui/InputError.svelte';
+	import Modal from '$lib/ui/Modal.svelte';
 	import { formatISO, lightFormat, parseISO } from 'date-fns';
 	import { _ } from 'svelte-i18n';
 
@@ -34,6 +36,8 @@
 	let contacts: (string | null)[] = (form?.values?.contacts as string[] | undefined) ??
 		data.slot.contacts.map((contact) => contact.id) ?? [null];
 
+	let removeHelperModals: (ModalType | undefined)[] = [];
+
 	let loading = false;
 	const handleSubmit: SubmitFunction = ({ data }) => {
 		loading = true;
@@ -48,6 +52,22 @@
 			loading = false;
 		};
 	};
+
+	const handleRemoveHelper: (index: number) => SubmitFunction = index => {
+		return () => {
+			loading = true;
+			return async ({ result }) => {
+				if (result.type === 'failure') {
+					notifications.error($_(result.data?.generalError))
+				} else {
+					invalidate('helpermanagement:slots');
+					removeHelperModals[index]?.hide();
+				}
+				await applyAction(result);
+				loading = false;
+			}
+		}
+	}
 
 	let startTimeEl: HTMLInputElement;
 	let endTimeEl: HTMLInputElement;
@@ -214,6 +234,35 @@
 						</p>
 					</label>
 				{/each}
+			{/if}
+			{#if data.slot.helpers.length}
+				<hr />
+				<p class="unstyled text-lg">{$_('label.assigned_helpers')}</p>
+				<div class="flex flex-col">
+					{#each data.slot.helpers as helper, i (helper.id)}
+						<form method="POST" action="/api?/remove_helper" use:enhance={handleRemoveHelper(i)}>
+							<input type="hidden" name="slot_id" value={data.slot.id} />
+							<input type="hidden" name="user_id" value={helper.id} />
+							<div class="grid grid-cols-[auto_1fr] gap-x-4 items-center">
+								<span>{helper.name}</span>
+								<button type="button" class="btn btn-icon-sm" on:click={removeHelperModals[i]?.show}>
+									<Icon icon={x_mark} viewBoxHeight={24} viewBoxWidth={24} size={24} />
+								</button>
+							</div>
+							<Modal bind:modal={removeHelperModals[i]}>
+								<div class="p-8 space-y-4 flex flex-col">
+									<p class="unstyled text-xl pr-4">
+										{$_('page.edit_slot.confirm_delete_helper', { values: { name: helper.name } })}
+									</p>
+									<button type="submit" class="btn variant-filled-error">
+										<Icon icon={trash} viewBoxHeight={24} viewBoxWidth={24} />
+										<span>{$_('label.delete')}</span>
+									</button>
+								</div>
+							</Modal>
+						</form>
+					{/each}
+				</div>
 			{/if}
 			<button type="submit" disabled={loading} class="btn variant-filled-primary w-full">
 				{$_('label.save')}

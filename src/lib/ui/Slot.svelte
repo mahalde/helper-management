@@ -5,7 +5,7 @@
 	import { notifications } from '$lib/stores';
 	import { PERMISSIONS, type Modal as ModalType, type Slot, type SlotCategory } from '$lib/types';
 	import { getDateFormatter, getTimeFormatter } from '$lib/utils';
-	import { isSameDay } from 'date-fns';
+	import { isBefore, isSameDay } from 'date-fns';
 	import { locale, _ } from 'svelte-i18n';
 	import Icon from './Icon.svelte';
 	import {
@@ -72,6 +72,18 @@
 			information: row.additional_field_data
 		}));
 		additionalHelperInfoModal?.show(information);
+	}
+
+	let expiredSlotModal: ModalType | undefined;
+	function slotExpired() {
+		if ($page.data.permissions.includes(PERMISSIONS.SLOT_CREATE)) {
+			return false;
+		}
+
+		return (
+			isBefore(slot.start_time, new Date(2023, 4, 2)) &&
+			(alreadyHelper || !slot.max_helpers || slot.helpers.length < slot.max_helpers)
+		);
 	}
 
 	let loading = false;
@@ -162,79 +174,101 @@
 				<span>{$_('label.edit')}</span>
 			</a>
 		{/if}
-		<form
-			method="POST"
-			action={`/api?/${alreadyHelper ? 'remove_helper' : 'add_helper'}`}
-			use:enhance={handleSubmit}
-		>
-			<input type="hidden" name="slot_id" value={slot.id} />
-			{#if alreadyHelper}
-				<button
-					type="submit"
-					disabled={loading}
-					class="btn btn-sm variant-glass-secondary w-fit gap-2"
+		{#if slotExpired()}
+			<button class="btn btn-sm variant-glass-primary self-end" on:click={expiredSlotModal?.show}>
+				<span
+					><Icon icon={alreadyHelper ? minus : plus} viewBoxHeight={24} viewBoxWidth={24} /></span
 				>
-					<span><Icon icon={minus} viewBoxHeight={24} viewBoxWidth={24} /></span>
-					{$_('label.remove_helper')}
-				</button>
-			{:else if !slot.max_helpers || slot.helpers.length < slot.max_helpers}
-				<button
-					type={needsAdditionalInformation() ? 'button' : 'submit'}
-					on:click={() => {
-						if (needsAdditionalInformation()) additionalFieldsModal?.show();
-					}}
-					disabled={loading}
-					class="btn btn-sm variant-glass-primary w-fit gap-2 self-end"
-				>
-					<span><Icon icon={plus} viewBoxHeight={24} viewBoxWidth={24} /></span>
-					{$_('label.add_helper')}
-				</button>
-			{/if}
-			{#if needsAdditionalInformation()}
-				<Modal bind:modal={additionalFieldsModal}>
-					<div class="p-4 space-y-4 flex flex-col">
-						{#if isContact}
-							<p class="unstyled text-xl mb-2">{$_('label.additional_helper')}</p>
-							<p>{$_('component.slot.additional_helper')}</p>
-							<label class="label">
-								<span>{$_('label.name')}</span>
-								<input type="text" name="additional_helper_name" class="input" />
-							</label>
-							<label class="label">
-								<span>{$_('label.phone')}</span>
-								<input type="text" name="additional_helper_phone" class="input" />
-							</label>
-						{/if}
-						{#if slot.additional_fields.length}
-							<p class="unstyled text-xl mb-2">{$_('label.additional_fields')}</p>
-							<p>{$_('component.slot.additional_fields')}</p>
-						{/if}
-						{#each slot.additional_fields as field (field.id)}
-							<label class="label">
-								<p>
-									{field.name}
-									{#if field.description}
-										<span class="text-gray-500">({field.description})</span>
-									{/if}
-								</p>
-								{#if field.type === 'text'}
-									<input
-										type="text"
-										name="additional_field_{field.id}"
-										required={!field.optional}
-										class="input"
-									/>
-								{/if}
-							</label>
+				{$_(alreadyHelper ? 'label.remove_helper' : 'label.add_helper')}
+			</button>
+			<Modal bind:modal={expiredSlotModal}>
+				<div class="p-4 space-y-4 flex flex-col">
+					<p>{$_('component.slot.expired')}</p>
+					<div class="grid grid-cols-[auto_1fr] gap-x-4 text-gray-500 dark:text-gray-300">
+						{#each slot.contacts as contact (contact.id)}
+							<span>{contact.name}</span>
+							<span
+								>(<a class="!text-primary-500" href="tel:{contact.phone}">{contact.phone}</a>)</span
+							>
 						{/each}
-						<button type="submit" class="btn variant-glass-primary gap-2">
-							<span><Icon icon={plus} viewBoxHeight={24} viewBoxWidth={24} /></span>
-							{$_('label.add_helper')}
-						</button>
 					</div>
-				</Modal>
-			{/if}
-		</form>
+				</div>
+			</Modal>
+		{:else}
+			<form
+				method="POST"
+				action={`/api?/${alreadyHelper ? 'remove_helper' : 'add_helper'}`}
+				use:enhance={handleSubmit}
+			>
+				<input type="hidden" name="slot_id" value={slot.id} />
+				{#if alreadyHelper}
+					<button
+						type="submit"
+						disabled={loading}
+						class="btn btn-sm variant-glass-secondary w-fit gap-2"
+					>
+						<span><Icon icon={minus} viewBoxHeight={24} viewBoxWidth={24} /></span>
+						{$_('label.remove_helper')}
+					</button>
+				{:else if !slot.max_helpers || slot.helpers.length < slot.max_helpers}
+					<button
+						type={needsAdditionalInformation() ? 'button' : 'submit'}
+						on:click={() => {
+							if (needsAdditionalInformation()) additionalFieldsModal?.show();
+						}}
+						disabled={loading}
+						class="btn btn-sm variant-glass-primary w-fit gap-2 self-end"
+					>
+						<span><Icon icon={plus} viewBoxHeight={24} viewBoxWidth={24} /></span>
+						{$_('label.add_helper')}
+					</button>
+				{/if}
+				{#if needsAdditionalInformation()}
+					<Modal bind:modal={additionalFieldsModal}>
+						<div class="p-4 space-y-4 flex flex-col">
+							{#if isContact}
+								<p class="unstyled text-xl mb-2">{$_('label.additional_helper')}</p>
+								<p>{$_('component.slot.additional_helper')}</p>
+								<label class="label">
+									<span>{$_('label.name')}</span>
+									<input type="text" name="additional_helper_name" class="input" />
+								</label>
+								<label class="label">
+									<span>{$_('label.phone')}</span>
+									<input type="text" name="additional_helper_phone" class="input" />
+								</label>
+							{/if}
+							{#if slot.additional_fields.length}
+								<p class="unstyled text-xl mb-2">{$_('label.additional_fields')}</p>
+								<p>{$_('component.slot.additional_fields')}</p>
+							{/if}
+							{#each slot.additional_fields as field (field.id)}
+								<label class="label">
+									<p>
+										{field.name}
+										{#if field.description}
+											<span class="text-gray-500">({field.description})</span>
+										{/if}
+									</p>
+									{#if field.type === 'text'}
+										<input
+											type="text"
+											name="additional_field_{field.id}"
+											required={!field.optional}
+											class="input"
+										/>
+									{/if}
+								</label>
+							{/each}
+							<button type="submit" class="btn variant-glass-primary gap-2">
+								<span><Icon icon={plus} viewBoxHeight={24} viewBoxWidth={24} /></span>
+								{$_('label.add_helper')}
+							</button>
+						</div>
+					</Modal>
+				{/if}
+			</form>
+		{/if}
 	</div>
 	{#if slot.contacts.length}
 		<hr class="my-2" />

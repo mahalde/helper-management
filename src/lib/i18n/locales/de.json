@@ -4,7 +4,9 @@
 			"additional_fields": "Der Organisator benötigt für diesen Zeitslot zusätzliche Informationen von dir.",
 			"additional_helper": "Hier kannst du als Organisator einen Helfer eintragen, der sich bei dir persönlich gemeldet hat und keinen Zugriff auf die Online-Helfereinteilung hat. Bitte gebe nur einen Helfer an. Lässt du diese Felder leer, trägst du dich selber als Helfer für diesen Zeitslot ein.",
 			"additional_helper_info": "Zusätzliche Helferinformationen",
-			"confirm_delete": "Möchtest du den Zeitslot \"{name}\" wirklich löschen?"
+			"confirm_delete": "Möchtest du den Zeitslot \"{name}\" wirklich löschen?",
+			"expired": "Die Anmeldung für diesen Zeitslot ist abgelaufen. Wenn du noch Änderungen vornehmen willst, dann melde dich bei den Kontakten für diesen Zeitslot:",
+			"make_change": "Änderung vornehmen"
 		}
 	},
 	"errors": {
@@ -39,6 +41,7 @@
 		"empty_helper_slots": "Teilweise besetzte Arbeitszeiten",
 		"end_time": "Endzeit",
 		"full_slot": "Voll besetzte Arbeitszeiten",
+		"go_back": "Zurück",
 		"helpers_needed": "Noch benötigte Helfer",
 		"log_out": "Ausloggen",
 		"max_helpers": "Maximale Anzahl von Helfern (optional)",
@@ -67,6 +70,7 @@
 		"auth": {
 			"already_registered": "Bereits registriert? Dann log hier dich ein",
 			"alternative_login": "oder alternativ mit",
+			"forgot_password": "Passwort vergessen?",
 			"headline": "Helfereinteilung Turnier 2023",
 			"log_in": "Einloggen",
 			"not_registered": "Noch nicht registriert? Dann melde dich hier an",
@@ -88,6 +92,7 @@
 			"your_times": "Deine Arbeitszeiten"
 		},
 		"edit_slot": {
+			"confirm_delete_helper": "Möchtest du den Helfer \"{name}\" wirklich löschen?",
 			"headline": "Zeitslot bearbeiten"
 		},
 		"first_visit": {
@@ -98,6 +103,11 @@
 		},
 		"profile": {
 			"headline": "Deine Daten"
+		},
+		"send_password_reset": {
+			"description": "Gib die E-Mail-Adresse deines Accounts ein. An diesen wird dann eine Mail mit einem Link zum Zurücksetzen deines Passworts gesendet.",
+			"send_mail": "Mail senden",
+			"success": "Mail erfolgreich gesendet"
 		}
 	}
 }

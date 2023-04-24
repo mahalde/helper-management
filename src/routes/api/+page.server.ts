@@ -73,7 +73,7 @@ export const actions: Actions = {
 	async remove_helper({ request, locals: { supabase, getSession } }) {
 		const formData = await request.formData();
 		const slot_id = formData.get('slot_id') as string;
-		const user_id = (await getSession())?.user.id;
+		const user_id = formData.get('user_id') || (await getSession())?.user.id;
 
 		if (!user_id) {
 			return fail(401, { generalError: 'errors.unauthorized' });

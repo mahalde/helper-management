@@ -1,7 +1,8 @@
 import type { Organizer, Slot } from '$lib/types';
 import { redirect } from '@sveltejs/kit';
 
-export const load = async ({ parent, params: { slotId } }) => {
+export const load = async ({ parent, depends, params: { slotId } }) => {
+	depends('helpermanagement:slots');
 	const { supabase, permissions } = await parent();
 
 	if (!permissions.includes('slots.create')) {

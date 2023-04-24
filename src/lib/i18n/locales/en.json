@@ -4,7 +4,9 @@
 			"additional_fields": "The organizer needs some additional information from you for this time slot.",
 			"additional_helper": "As an organiser, you can enter a helper here who has registered with you personally and does not have access to the online helper management. Please enter only one helper. If you don't fill in these fields, you assign yourself as helper for this slot.",
 			"additional_helper_info": "Additional helper information",
-			"confirm_delete": "Do you really want to delete timeslot \"{name}\"?"
+			"confirm_delete": "Do you really want to delete timeslot \"{name}\"?",
+			"expired": "The time range to make a change to this slot is expired. To still make a change, contact the following persons:",
+			"make_change": "Make change"
 		}
 	},
 	"errors": {
@@ -39,6 +41,7 @@
 		"empty_helper_slots": "Partially staffed timeslots",
 		"end_time": "End time",
 		"full_slot": "Fully staffed timeslots",
+		"go_back": "Go back",
 		"helpers_needed": "Helpers needed",
 		"log_out": "Log out",
 		"max_helpers": "Maximum number of helpers (optional)",
@@ -67,6 +70,7 @@
 		"auth": {
 			"already_registered": "Already registered? Click here to log in",
 			"alternative_login": "or continue with",
+			"forgot_password": "Forgot your password?",
 			"headline": "Helper management 2023",
 			"log_in": "Log In",
 			"not_registered": "Not registered yet? Click here to register",
@@ -88,6 +92,7 @@
 			"your_times": "Your timeslots"
 		},
 		"edit_slot": {
+			"confirm_delete": "Do you really want to delete the helper \"{name}\"?",
 			"headline": "Edit timeslot"
 		},
 		"first_visit": {
@@ -98,6 +103,11 @@
 		},
 		"profile": {
 			"headline": "Your data"
+		},
+		"send_password_reset": {
+			"description": "Enter the email address of your account. An email with a link to reset your password will be sent to your email address.",
+			"send_mail": "Send mail",
+			"success": "Successfully sent mail"
 		}
 	}
 }
