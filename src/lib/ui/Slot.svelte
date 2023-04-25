@@ -76,6 +76,7 @@
 
 	let expiredSlotModal: ModalType | undefined;
 	function slotExpired() {
+		return false;
 		if ($page.data.permissions.includes(PERMISSIONS.SLOT_CREATE)) {
 			return false;
 		}
