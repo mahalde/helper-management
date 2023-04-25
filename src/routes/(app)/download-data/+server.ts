@@ -57,6 +57,10 @@ export async function GET({ locals: { supabase, getSession } }) {
 	const slotMap = getSlotMap(formattedSlots);
 	const wb = XLSX.utils.book_new();
 
+	if (slotMap.size === 0) {
+		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['Keine Zeitslots, bei denen du als Ansprechpartner hinterlegt bist']]));
+	}
+
 	for (const [date, slots] of slotMap) {
 		const slotsForDisplay = formatSlotsForDisplay(slots);
 		const colInfo: XLSX.ColInfo[] = []
