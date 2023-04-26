@@ -53,7 +53,7 @@ export const actions = {
 		formDataValues.start_time = (formDataValues.start_time as string).split('+')[0];
 		formDataValues.end_time = (formDataValues.end_time as string).split('+')[0];
 		formDataValues.additional_fields = additionalFields;
-		console.log(formData);
+
 		if (!result.success) {
 			const errors = result.error.flatten().fieldErrors;
 			return fail(400, {

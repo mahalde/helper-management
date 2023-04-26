@@ -134,6 +134,9 @@
 					{$_(`page.auth.${type === 'login' ? 'log_in' : 'register'}`)}
 				</button>
 			</form>
+			<!--<div class="text-center">
+				<a class="!text-primary-500" href="/auth/send-password-reset">{$_('page.auth.forgot_password')}</a>
+			</div>-->
 			<hr class="mt-2" />
 			<div class="text-gray-400 text-center font-light text-sm">
 				{$_('page.auth.alternative_login')}

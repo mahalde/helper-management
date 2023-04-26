@@ -104,6 +104,9 @@
 		"profile": {
 			"headline": "Deine Daten"
 		},
+		"reset_password": {
+			"reset": "Passwort ändern"
+		},
 		"send_password_reset": {
 			"description": "Gib die E-Mail-Adresse deines Accounts ein. An diesen wird dann eine Mail mit einem Link zum Zurücksetzen deines Passworts gesendet.",
 			"send_mail": "Mail senden",
