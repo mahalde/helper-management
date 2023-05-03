@@ -81,8 +81,9 @@
 		}
 
 		return (
-			isBefore(slot.start_time, new Date(2023, 4, 2)) &&
-			(alreadyHelper || !slot.max_helpers || slot.helpers.length < slot.max_helpers)
+			slot.category === 'dressage' ||
+			(isBefore(slot.start_time, new Date(2023, 4, 2)) &&
+				(alreadyHelper || !slot.max_helpers || slot.helpers.length < slot.max_helpers))
 		);
 	}
 

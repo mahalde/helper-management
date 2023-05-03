@@ -10,7 +10,10 @@ export const load: PageLoad = async ({ parent, depends }) => {
 		throw redirect(303, '/auth');
 	}
 
-	const { data: rawSlots } = await supabase.from('slots_with_helpers').select<'*', Slot>('*');
+	const { data: rawSlots } = await supabase
+		.from('slots_with_helpers')
+		.select<'*', Slot>('*')
+		.gte('start_time', new Date().toISOString());
 	const slots = rawSlots?.map((slot) => ({
 		...slot,
 		start_time: new Date(slot.start_time),
