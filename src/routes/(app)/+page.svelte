@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { PERMISSIONS, type Modal as ModalType, type Slot, type SortOption } from '$lib/types';
+	import {
+		PERMISSIONS,
+		type Modal as ModalType,
+		type Slot,
+		type SortOption,
+		TemporarySlot
+	} from '$lib/types';
 	import Icon from '$lib/ui/Icon.svelte';
 	import { adjustments_horizontal, funnel } from '$lib/ui/icons';
 	import Modal from '$lib/ui/Modal.svelte';
@@ -7,10 +13,15 @@
 	import { getDateFormatter } from '$lib/utils';
 	import { locale, _ } from 'svelte-i18n';
 	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+	import TemporarySlotDisplay from '$lib/ui/TemporarySlotDisplay.svelte';
+	import YourTemporarySlotDisplay from '$lib/ui/YourTemporarySlotDisplay.svelte';
 
 	export let data: PageData;
 
 	let yourSlots: Slot[] = [];
+	let yourTemporarySlots: TemporarySlot[] = [];
 	let filteredSlots: Slot[] = [];
 
 	const slotMetadata = {
@@ -70,6 +81,14 @@
 			data.slots?.filter((slot) =>
 				slot.helpers.some((helper) => helper.id === data.session?.user.id)
 			) ?? [];
+
+		if (data.temporarySlots) {
+			yourTemporarySlots = Object.values(data.temporarySlots)
+				.map((record) => Object.values(record))
+				.flat(2)
+				.filter((slot) => slot.helpers.some((helper) => helper.id === data.session?.user.id));
+			console.log(yourTemporarySlots);
+		}
 	}
 
 	$: {
@@ -112,6 +131,13 @@
 
 		filtered = true;
 	}
+
+	let previewModal: ModalType;
+
+	onMount(() => {
+		if ($page.url.searchParams.get('popup') === 'false') return;
+		previewModal.show();
+	});
 </script>
 
 <div class="my-4 w-fit mx-2 md:mx-auto">
@@ -128,9 +154,13 @@
 	<h4 class="dark:text-gray-200 uppercase tracking-wide text-gray-500">
 		{$_('page.dashboard.your_times')}
 	</h4>
+	{#if yourTemporarySlots.length}
+		<YourTemporarySlotDisplay slots={yourTemporarySlots} />
+	{/if}
 	{#if yourSlots.length}
 		<SlotDisplay slots={yourSlots} withHelpers={false} sortOption={sortOptions[0]} />
-	{:else}
+	{/if}
+	{#if !yourSlots.length && !yourTemporarySlots.length}
 		<p class="dark:text-white">{$_('page.dashboard.no_times_chosen')}</p>
 	{/if}
 	<hr class="my-12" />
@@ -167,7 +197,11 @@
 			</div>
 		{/if}
 	</div>
-	{#if filteredSlots?.length}
+	{#if data.temporarySlots && Object.keys(data.temporarySlots).length !== 0}
+		<h1>Vorläufige Arbeitszeiten</h1>
+		<TemporarySlotDisplay slots={data.temporarySlots} />
+	{/if}
+	{#if filteredSlots?.length || !data.temporarySlots || Object.keys(data.temporarySlots).length}
 		<SlotDisplay slots={filteredSlots} sortOption={selectedSortOption} />
 	{:else}
 		<p class="dark:text-white">{$_('page.dashboard.no_times')}</p>
@@ -208,4 +242,16 @@
 			<span>{$_('page.dashboard.apply_filter')}</span>
 		</button>
 	</form>
+</Modal>
+
+<Modal bind:modal={previewModal}>
+	<div class="p-4 space-y-4 flex flex-col">
+		<h2>{$_('page.dashboard.preview_modal.header')}</h2>
+		<p>{$_('page.dashboard.preview_modal.paragraph_1')}</p>
+		<p>{$_('page.dashboard.preview_modal.paragraph_2')}</p>
+		<p>{$_('page.dashboard.preview_modal.paragraph_3')}</p>
+		<button type="button" class="btn variant-filled-primary" on:click={previewModal.hide}>
+			{$_('page.dashboard.preview_modal.button')}
+		</button>
+	</div>
 </Modal>

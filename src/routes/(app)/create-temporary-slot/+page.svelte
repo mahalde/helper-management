@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { applyAction, enhance, type SubmitFunction } from '$app/forms';
 	import { notifications } from '$lib/stores';
-	import { SlotCategory, type AdditionalCategoryField } from '$lib/types';
+	import { SlotCategory, type AdditionalCategoryField, TemporaryTimeslot } from '$lib/types';
 	import Icon from '$lib/ui/Icon.svelte';
 	import { minus, plus } from '$lib/ui/icons';
 	import InputError from '$lib/ui/InputError.svelte';
+	import { InputChip } from '@skeletonlabs/skeleton';
 	import { formatISO, lightFormat, parseISO } from 'date-fns';
 	import { _ } from 'svelte-i18n';
 
@@ -17,19 +18,9 @@
 
 	let selectedCategory: SlotCategory | '' =
 		(form?.values?.category as SlotCategory) ?? data.duplicateSlot?.category ?? '';
-	let additionalCategoryFields: AdditionalCategoryField[] = [];
-	$: if (selectedCategory) {
-		getAdditionalCategoryFields(selectedCategory);
-	}
 
-	async function getAdditionalCategoryFields(category: SlotCategory) {
-		const { data: additionalFields } = await data.supabase
-			.from('additional_category_fields')
-			.select<'*', AdditionalCategoryField>('*')
-			.eq('category', category);
-
-		additionalCategoryFields = additionalFields ?? [];
-	}
+	let selectedTimeslot: TemporaryTimeslot | '' =
+		(form?.values?.timeslot as TemporaryTimeslot) ?? data.duplicateSlot?.timeslot ?? '';
 
 	let contacts: (string | null)[] = (form?.values?.contacts as string[] | undefined) ??
 		data.duplicateSlot?.contacts.map((contact) => contact.id) ?? [null];
@@ -37,9 +28,8 @@
 	let loading = false;
 	const handleSubmit: SubmitFunction = ({ data }) => {
 		loading = true;
-		const [startTime, endTime] = updateDateFields();
-		data.set('start_time', startTime);
-		data.set('end_time', endTime);
+		const date = updateDateField();
+		data.set('date', date);
 		return async ({ result }) => {
 			if (result.type === 'redirect') {
 				notifications.success($_('notification.success.changes_saved'));
@@ -49,20 +39,13 @@
 		};
 	};
 
-	let startTimeEl: HTMLInputElement;
-	let endTimeEl: HTMLInputElement;
-	function updateDateFields() {
-		let startTime = startTimeEl.value;
-		if (startTime) {
-			startTime = formatISO(parseISO(startTime));
+	let dateEl: HTMLInputElement;
+	function updateDateField() {
+		let date = dateEl.value;
+		if (date) {
+			date = formatISO(parseISO(date));
 		}
-
-		let endTime = endTimeEl.value;
-		if (endTime) {
-			endTime = formatISO(parseISO(endTime));
-		}
-
-		return [startTime, endTime] as const;
+		return date;
 	}
 
 	function formatDate(date: Date | undefined) {
@@ -73,17 +56,17 @@
 </script>
 
 <div class="flex flex-col w-full items-center">
-	<a href="/create-temporary-slot" class="btn variant-filled-primary m-4">
-		{$_('page.create_slot.create_temporary_slot_link')}
+	<a href="/create-slot" class="btn variant-filled-primary m-4">
+		{$_('page.create_temporary_slot.create_slot_link')}
 	</a>
 	<div
 		class="w-full max-w-xl m-4 sm:mx-6 lg:mx-8 p-4 border border-gray-300 rounded-lg shadow-sm space-y-8"
 	>
-		<h3>{$_('page.create_slot.headline')}</h3>
+		<h3>{$_('page.create_temporary_slot.headline')}</h3>
 		<form
 			use:enhance={handleSubmit}
 			method="POST"
-			action="?/createSlot"
+			action="?/createTemporarySlot"
 			class="flex flex-col gap-6"
 		>
 			<div class="flex flex-col sm:flex-row gap-4 justify-between">
@@ -98,6 +81,8 @@
 					/>
 					<InputError errors={form?.errors?.name} />
 				</label>
+			</div>
+			<div class="flex flex-col sm:flex-row justify-between gap-4">
 				<label class="label">
 					<span>{$_('label.category')}</span>
 					<select
@@ -112,59 +97,41 @@
 					</select>
 					<InputError errors={form?.errors?.category} />
 				</label>
+				<label class="label">
+					<span>{$_('label.date')}</span>
+					<input
+						bind:this={dateEl}
+						name="date"
+						type="date"
+						value={form?.values?.start_time ?? formatDate(data.duplicateSlot?.date) ?? ''}
+						class="input"
+						class:input-error={form?.errors?.date}
+					/>
+					<InputError errors={form?.errors?.date} />
+				</label>
+				<label class="label">
+					<span>{$_('label.timeslot')}</span>
+					<select
+						name="timeslot"
+						bind:value={selectedTimeslot}
+						class="input"
+						class:input-error={form?.errors?.timeslot}
+					>
+						{#each Object.keys(TemporaryTimeslot.enum) as timeslot}
+							<option value={timeslot}>{$_(`label.${timeslot}`)}</option>
+						{/each}
+					</select></label
+				>
 			</div>
-			<div class="flex flex-col sm:flex-row justify-between gap-4">
-				<label class="label">
-					<span>{$_('label.start_time')}</span>
-					<input
-						bind:this={startTimeEl}
-						name="start_time"
-						type="datetime-local"
-						value={form?.values?.start_time ?? formatDate(data.duplicateSlot?.start_time) ?? ''}
-						class="input"
-						class:input-error={form?.errors?.start_time}
-					/>
-					<InputError errors={form?.errors?.start_time} />
-				</label>
-				<label class="label">
-					<span>{$_('label.end_time')}</span>
-					<input
-						bind:this={endTimeEl}
-						name="end_time"
-						type="datetime-local"
-						value={form?.values?.end_time ?? formatDate(data.duplicateSlot?.end_time) ?? ''}
-						class="input"
-						class:input-error={form?.errors?.end_time}
-					/>
-					<InputError errors={form?.errors?.end_time} />
-				</label>
-			</div>
-			<div class="flex flex-col sm:flex-row justify-between gap-4">
-				<label class="label">
-					<span>{$_('label.min_helpers')}</span>
-					<input
-						name="min_helpers"
-						type="number"
-						value={form?.values?.min_helpers ?? data.duplicateSlot?.min_helpers ?? 0}
-						class="input"
-						min={0}
-						class:input-error={form?.errors?.min_helpers}
-					/>
-					<InputError errors={form?.errors?.min_helpers} />
-				</label>
-				<label class="label">
-					<span>{$_('label.max_helpers')}</span>
-					<input
-						name="max_helpers"
-						type="number"
-						value={form?.values?.max_helpers ?? data.duplicateSlot?.max_helpers ?? null}
-						class="input"
-						min={0}
-						class:input-error={form?.errors?.max_helpers}
-					/>
-					<InputError errors={form?.errors?.max_helpers} />
-				</label>
-			</div>
+			<label class="label">
+				<span>{$_('label.openings')}</span>
+				<InputChip
+					name="openings"
+					required
+					value={data.duplicateSlot?.openings.map((opening) => opening.name) ?? []}
+					allowUpperCase
+				/>
+			</label>
 			{#if data.organizers?.length}
 				<label class="label">
 					<span>{$_('label.contacts')}</span>
@@ -202,30 +169,6 @@
 						<InputError errors={form?.errors?.contacts} />
 					{/each}
 				</label>
-			{/if}
-			{#if additionalCategoryFields.length}
-				<hr />
-				<p class="unstyled text-lg">{$_('label.additional_fields')}</p>
-				<p>{$_('page.create_slot.additional_fields')}</p>
-				{#each additionalCategoryFields as field (field.id)}
-					<label class="flex items-center gap-2">
-						<input
-							name="additional_field_{field.id}"
-							type="checkbox"
-							checked={form?.values.additional_fields.some((formField) => formField === field.id) ??
-								data.duplicateSlot?.additional_fields.some(
-									(slotField) => slotField.id === field.id
-								)}
-							class="checkbox variant-ringed-primary"
-						/>
-						<p>
-							{field.name}
-							{#if field.description}
-								({field.description})
-							{/if}
-						</p>
-					</label>
-				{/each}
 			{/if}
 			<button type="submit" disabled={loading} class="btn variant-filled-primary w-full">
 				{$_('label.save')}

@@ -7,6 +7,9 @@
 			"confirm_delete": "Möchtest du den Zeitslot \"{name}\" wirklich löschen?",
 			"expired": "Die Anmeldung für diesen Zeitslot ist abgelaufen. Wenn du noch Änderungen vornehmen willst, dann melde dich bei den Kontakten für diesen Zeitslot:",
 			"make_change": "Änderung vornehmen"
+		},
+		"temporary_slot": {
+			"confirm_delete": "Möchtest du den vorläufigen Zeitslot \"{name}\" wirklich löschen?"
 		}
 	},
 	"errors": {
@@ -25,6 +28,7 @@
 		"add_helper": "Als Helfer eintragen",
 		"additional_fields": "Zusätzliche Informationen",
 		"additional_helper": "Helfer",
+		"afternoon": "Nachmittags",
 		"assigned_helpers": "Eingeteilte Helfer",
 		"category": "Kategorie",
 		"catering": "Catering",
@@ -40,14 +44,17 @@
 		"email": "E-Mail-Adresse",
 		"empty_helper_slots": "Teilweise besetzte Arbeitszeiten",
 		"end_time": "Endzeit",
+		"evening": "Abends",
 		"full_slot": "Voll besetzte Arbeitszeiten",
 		"go_back": "Zurück",
 		"helpers_needed": "Noch benötigte Helfer",
 		"log_out": "Ausloggen",
 		"max_helpers": "Maximale Anzahl von Helfern (optional)",
 		"min_helpers": "Minimale Anzahl von Helfern",
+		"morning": "Vormittags",
 		"name": "Name",
 		"num_of_helpers_needed": "Noch {num} Helfer benötigt",
+		"openings": "Arbeitsdienste",
 		"optional": "Optional",
 		"password": "Passwort",
 		"phone": "Mobile Telefonnummer",
@@ -56,6 +63,9 @@
 		"showjumping": "Springen",
 		"sort_by": "Sortieren nach",
 		"start_time": "Startzeit",
+		"temporary_helpers": "Vorläufige Helfer",
+		"temporary_slots": "Vorläufige Arbeitszeiten",
+		"timeslot": "Zeitraum",
 		"toggle_all": "Alle auswählen"
 	},
 	"layout": {
@@ -78,7 +88,12 @@
 		},
 		"create_slot": {
 			"additional_fields": "Hier kannst du zusätzliche Informationen aktivieren, welche die Helfer bei der Eintragung in diesen Zeitslot angeben müssen.",
-			"headline": "Zeitslot erstellen"
+			"headline": "Zeitslot erstellen",
+			"create_temporary_slot_link": "Vorläufigen Zeitslot erstellen"
+		},
+		"create_temporary_slot": {
+			"create_slot_link": "Normalen Zeitslot erstellen",
+			"headline": "Vorläufigen Zeitslot erstellen"
 		},
 		"dashboard": {
 			"all_times": "Alle Arbeitszeiten",
@@ -87,6 +102,13 @@
 			"download_slots": "Zeitslots herunterladen",
 			"no_times": "Keine Zeiten vorhanden",
 			"no_times_chosen": "Keine Zeiten ausgewählt",
+			"preview_modal": {
+				"header": "Vorläufige Zeiteinteilung",
+				"paragraph_1": "Viele der angezeigten Helferdienste befinden sich zurzeit in einem vorläufigen Modus. Dabei wird jeder vorläufige Helferdienst selbst gekennzeichnet. Für diese sind auch nur Zeiträume inklusive der in diesem Zeitraum stattfindenden Helferdienste sichtbar. Du kannst dich dabei in die Dienste eintragen, die du gerne übernehmen möchtest. ",
+				"paragraph_2": "Es kann allerdings sein, dass mehr Personen eingetragen sind, als letzendlich benötigt werden. In diesem Fall werden die Helfer gewählt, die sich zuerst eingetragen haben.",
+				"paragraph_3": "Wenn die Zeiteinteilung vorliegt, wirst du den Möglichkeiten nach in deine gewünschte Prüfung eingetragen und erhälst auch eine Benachrichtung, ob das geklappt oder nicht. Ab dem Zeitpunkt kannst du dich dann auch nach Belieben in diesem oder anderen Helferdiensten eintragen oder austragen.",
+				"button": "Verstanden!"
+			},
 			"show_filter": "Filtern",
 			"show_full_slots": "Voll besetzte Arbeitszeiten anzeigen",
 			"your_times": "Deine Arbeitszeiten"

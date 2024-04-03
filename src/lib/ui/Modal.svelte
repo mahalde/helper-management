@@ -5,13 +5,13 @@
 	export const modal = {
 		show(data?: unknown) {
 			modalData = data;
-			modalEl.setAttribute('aria-hidden', 'false');
-			modalEl.classList.remove('hidden');
+			modalEl?.setAttribute('aria-hidden', 'false');
+			modalEl?.classList.remove('hidden');
 		},
 		hide() {
-			modalEl.setAttribute('aria-hidden', 'true');
-			modalEl.classList.add('hidden');
-		},
+			modalEl?.setAttribute('aria-hidden', 'true');
+			modalEl?.classList.add('hidden');
+		}
 	};
 	let modalData: any | undefined;
 	let modalEl: HTMLDivElement;
