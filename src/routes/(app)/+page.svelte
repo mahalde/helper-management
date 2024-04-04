@@ -198,10 +198,11 @@
 		{/if}
 	</div>
 	{#if data.temporarySlots && Object.keys(data.temporarySlots).length !== 0}
-		<h1>Vorläufige Arbeitszeiten</h1>
+		<h1 class="mt-8 mb-4 text-center">Vorläufige Arbeitszeiten</h1>
 		<TemporarySlotDisplay slots={data.temporarySlots} />
 	{/if}
 	{#if filteredSlots?.length || !data.temporarySlots || Object.keys(data.temporarySlots).length}
+		<h1 class="mt-8 mb-4 text-center">Feste Arbeitszeiten</h1>
 		<SlotDisplay slots={filteredSlots} sortOption={selectedSortOption} />
 	{:else}
 		<p class="dark:text-white">{$_('page.dashboard.no_times')}</p>
