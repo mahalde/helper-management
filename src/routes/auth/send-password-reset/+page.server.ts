@@ -1,4 +1,3 @@
-import { dev } from '$app/environment';
 import { fail } from '@sveltejs/kit';
 import { z } from 'zod';
 
