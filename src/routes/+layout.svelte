@@ -12,10 +12,10 @@
 </script>
 
 <svelte:head>
-	<title>Helfereinteilung Turnier Höven 2023</title>
+	<title>Helfereinteilung Turnier Höven 2024</title>
 	<meta
 		name="description"
-		content="Helfereinteilung für das Turnier des Reitervereins Höven 2023"
+		content="Helfereinteilung für das Turnier des Reitervereins Höven 2024"
 	/>
 </svelte:head>
 

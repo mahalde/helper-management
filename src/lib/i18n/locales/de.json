@@ -69,7 +69,7 @@
 		"toggle_all": "Alle auswählen"
 	},
 	"layout": {
-		"headline": "Helfereinteilung 2023"
+		"headline": "Helfereinteilung 2024"
 	},
 	"notification": {
 		"success": {
@@ -81,7 +81,7 @@
 			"already_registered": "Bereits registriert? Dann log hier dich ein",
 			"alternative_login": "oder alternativ mit",
 			"forgot_password": "Passwort vergessen?",
-			"headline": "Helfereinteilung Turnier 2023",
+			"headline": "Helfereinteilung Turnier 2024",
 			"log_in": "Einloggen",
 			"not_registered": "Noch nicht registriert? Dann melde dich hier an",
 			"register": "Registrieren"
@@ -120,7 +120,7 @@
 		"first_visit": {
 			"confirm_disclaimer": "Ich stimme der Verwendung meiner Daten zu.",
 			"disclaimer": "Deine Daten werden verwendet, um anderen Teilnehmern und den Organisatoren darzustellen, wer sich schon für die anfallenden Arbeiten gemeldet hat. Deine Telefonnummer ist dabei nur für die Organisatoren einsehbar, damit du kontaktierst werden kannst.",
-			"header": "Willkommen bei der Helfereinteilung für die Turniere 2023 des Reiterverein Höven.",
+			"header": "Willkommen bei der Helfereinteilung für die Turniere 2024 des Reiterverein Höven.",
 			"text": "Bitte gib hier deinen Namen und deine Telefonnummer an, damit dich die Organisatoren kontaktieren können."
 		},
 		"profile": {

@@ -59,7 +59,7 @@
 		"toggle_all": "Toggle all"
 	},
 	"layout": {
-		"headline": "Helper management 2023"
+		"headline": "Helper management 2024"
 	},
 	"notification": {
 		"success": {
@@ -71,7 +71,7 @@
 			"already_registered": "Already registered? Click here to log in",
 			"alternative_login": "or continue with",
 			"forgot_password": "Forgot your password?",
-			"headline": "Helper management 2023",
+			"headline": "Helper management 2024",
 			"log_in": "Log In",
 			"not_registered": "Not registered yet? Click here to register",
 			"register": "Register"
@@ -98,7 +98,7 @@
 		"first_visit": {
 			"confirm_disclaimer": "I agree to the use of the data",
 			"disclaimer": "Your data will be used to show other participants and the organisers who has already signed up for the work that needs to be done. Your telephone number is only visible to the organisers so that they can contact you.",
-			"header": "Welcome to the helper management for the 2023 tournaments of the Riding Club Höven.",
+			"header": "Welcome to the helper management for the 2024 tournaments of the Riding Club Höven.",
 			"text": "Please enter your name and phone number so the organisers can contact you."
 		},
 		"profile": {
