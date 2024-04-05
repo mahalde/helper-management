@@ -1,12 +1,15 @@
 <script lang="ts">
-	import { applyAction, enhance, type SubmitFunction } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
+	import { invalidate } from '$app/navigation';
 	import { notifications } from '$lib/stores';
-	import { SlotCategory, type AdditionalCategoryField, TemporaryTimeslot } from '$lib/types';
+	import { SlotCategory, TemporaryTimeslot, type Modal as ModalType } from '$lib/types';
 	import Icon from '$lib/ui/Icon.svelte';
-	import { minus, plus } from '$lib/ui/icons';
 	import InputError from '$lib/ui/InputError.svelte';
+	import Modal from '$lib/ui/Modal.svelte';
+	import { minus, plus, trash, x_mark } from '$lib/ui/icons';
 	import { InputChip } from '@skeletonlabs/skeleton';
-	import { formatISO, lightFormat, parseISO } from 'date-fns';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import { formatISO, parseISO } from 'date-fns';
 	import { _ } from 'svelte-i18n';
 
 	export let data;
@@ -17,13 +20,15 @@
 	}
 
 	let selectedCategory: SlotCategory | '' =
-		(form?.values?.category as SlotCategory) ?? data.duplicateSlot?.category ?? '';
+		(form?.values?.category as SlotCategory) ?? data.slot.category ?? '';
 
 	let selectedTimeslot: TemporaryTimeslot | '' =
-		(form?.values?.timeslot as TemporaryTimeslot) ?? data.duplicateSlot?.timeslot ?? '';
+		(form?.values?.timeslot as TemporaryTimeslot) ?? data.slot.timeslot ?? '';
 
 	let contacts: (string | null)[] = (form?.values?.contacts as string[] | undefined) ??
-		data.duplicateSlot?.contacts.map((contact) => contact.id) ?? [null];
+		data.slot.contacts.map((contact) => contact.id) ?? [null];
+
+	let removeHelperModals: (ModalType | undefined)[] = [];
 
 	let loading = false;
 	const handleSubmit: SubmitFunction = ({ data }) => {
@@ -39,6 +44,22 @@
 		};
 	};
 
+	const handleRemoveHelper: (index: number) => SubmitFunction = (index) => {
+		return () => {
+			loading = true;
+			return async ({ result }) => {
+				if (result.type === 'failure') {
+					notifications.error($_(result.data?.generalError));
+				} else {
+					invalidate('helpermanagement:slots');
+					removeHelperModals[index]?.hide();
+				}
+				await applyAction(result);
+				loading = false;
+			};
+		};
+	};
+
 	let dateEl: HTMLInputElement;
 	function updateDateField() {
 		let date = dateEl.value;
@@ -49,18 +70,15 @@
 	}
 </script>
 
-<div class="flex flex-col w-full items-center">
-	<a href="/create-slot" class="btn variant-filled-primary m-4">
-		{$_('page.create_temporary_slot.create_slot_link')}
-	</a>
+<div class="flex w-full justify-center">
 	<div
 		class="w-full max-w-xl m-4 sm:mx-6 lg:mx-8 p-4 border border-gray-300 rounded-lg shadow-sm space-y-8"
 	>
-		<h3>{$_('page.create_temporary_slot.headline')}</h3>
+		<h3>{$_('page.edit_temporary_slot.headline')}</h3>
 		<form
 			use:enhance={handleSubmit}
 			method="POST"
-			action="?/createTemporarySlot"
+			action="?/editTemporarySlot"
 			class="flex flex-col gap-6"
 		>
 			<div class="flex flex-col sm:flex-row gap-4 justify-between">
@@ -69,7 +87,7 @@
 					<input
 						name="name"
 						type="text"
-						value={form?.values?.name ?? data.duplicateSlot?.name ?? ''}
+						value={form?.values?.name ?? data.slot.name ?? ''}
 						class="input"
 						class:input-error={form?.errors?.name}
 					/>
@@ -97,7 +115,7 @@
 						bind:this={dateEl}
 						name="date"
 						type="date"
-						value={form?.values?.date ?? data.duplicateSlot?.date ?? ''}
+						value={form?.values?.date ?? data.slot.date ?? ''}
 						class="input"
 						class:input-error={form?.errors?.date}
 					/>
@@ -114,15 +132,15 @@
 						{#each Object.keys(TemporaryTimeslot.enum) as timeslot}
 							<option value={timeslot}>{$_(`label.${timeslot}`)}</option>
 						{/each}
-					</select></label
-				>
+					</select>
+				</label>
 			</div>
 			<label class="label">
 				<span>{$_('label.openings')}</span>
 				<InputChip
 					name="openings"
 					required
-					value={data.duplicateSlot?.openings.map((opening) => opening.name) ?? []}
+					value={data.slot.openings.map((opening) => opening.name) ?? []}
 					allowUpperCase
 					on:click={(e) => e.preventDefault()}
 				/>
@@ -164,6 +182,41 @@
 						<InputError errors={form?.errors?.contacts} />
 					{/each}
 				</label>
+			{/if}
+			{#if data.slot.helpers.length}
+				<hr />
+				<p class="unstyled text-lg">{$_('label.assigned_helpers')}</p>
+				<div class="flex flex-col">
+					{#each data.slot.helpers as helper, i (helper.id)}
+						<form method="POST" action="/api?/remove_helper" use:enhance={handleRemoveHelper(i)}>
+							<input type="hidden" name="slot_id" value={data.slot.id} />
+							<input type="hidden" name="user_id" value={helper.id} />
+							<div class="grid grid-cols-[auto_1fr] gap-x-4 items-center">
+								<span
+									>{helper.name} ({helper.openings.map((opening) => opening.name).join(', ')})</span
+								>
+								<button
+									type="button"
+									class="btn btn-icon-sm"
+									on:click={removeHelperModals[i]?.show}
+								>
+									<Icon icon={x_mark} viewBoxHeight={24} viewBoxWidth={24} size={24} />
+								</button>
+							</div>
+							<Modal bind:modal={removeHelperModals[i]}>
+								<div class="p-8 space-y-4 flex flex-col">
+									<p class="unstyled text-xl pr-4">
+										{$_('page.edit_slot.confirm_delete_helper', { values: { name: helper.name } })}
+									</p>
+									<button type="submit" class="btn variant-filled-error">
+										<Icon icon={trash} viewBoxHeight={24} viewBoxWidth={24} />
+										<span>{$_('label.delete')}</span>
+									</button>
+								</div>
+							</Modal>
+						</form>
+					{/each}
+				</div>
 			{/if}
 			<button type="submit" disabled={loading} class="btn variant-filled-primary w-full">
 				{$_('label.save')}

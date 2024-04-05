@@ -117,6 +117,9 @@
 			"confirm_delete_helper": "Möchtest du den Helfer \"{name}\" wirklich löschen?",
 			"headline": "Zeitslot bearbeiten"
 		},
+		"edit_temporary_slot": {
+			"headline": "Vorläufigen Zeitslot bearbeiten"
+		},
 		"first_visit": {
 			"confirm_disclaimer": "Ich stimme der Verwendung meiner Daten zu.",
 			"disclaimer": "Deine Daten werden verwendet, um anderen Teilnehmern und den Organisatoren darzustellen, wer sich schon für die anfallenden Arbeiten gemeldet hat. Deine Telefonnummer ist dabei nur für die Organisatoren einsehbar, damit du kontaktierst werden kannst.",

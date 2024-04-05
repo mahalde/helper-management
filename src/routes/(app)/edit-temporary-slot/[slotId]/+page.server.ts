@@ -15,7 +15,7 @@ const slotSchema = z.object({
 });
 
 export const actions = {
-	async createTemporarySlot({ request, locals: { supabase, getSession } }) {
+	async editTemporarySlot({ params: { slotId }, request, locals: { supabase, getSession } }) {
 		const formData = await request.formData();
 		const values = {
 			name: formData.get('name'),
@@ -50,7 +50,7 @@ export const actions = {
 			});
 		}
 
-		const { data, error } = await supabase.from('temporary_slots').insert(result.data).select('id');
+		const { error } = await supabase.from('temporary_slots').update(result.data).eq('id', slotId);
 
 		if (error) {
 			console.error(error);
@@ -60,7 +60,18 @@ export const actions = {
 			});
 		}
 
-		const slotId = data[0].id;
+		const { error: deleteError } = await supabase
+			.from('temporary_slot_openings')
+			.delete()
+			.eq('slot_id', slotId);
+
+		if (deleteError) {
+			console.error(deleteError);
+			return fail(500, {
+				generalError: 'errors.server_general',
+				values: formDataValues
+			});
+		}
 
 		const openingRows = values.openings.map((opening) => ({
 			name: opening,

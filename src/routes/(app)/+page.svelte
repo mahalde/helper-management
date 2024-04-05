@@ -158,7 +158,7 @@
 		<YourTemporarySlotDisplay slots={yourTemporarySlots} />
 	{/if}
 	{#if yourSlots.length}
-		<SlotDisplay slots={yourSlots} withHelpers={false} sortOption={sortOptions[0]} />
+		<SlotDisplay slots={yourSlots} sortOption={sortOptions[0]} />
 	{/if}
 	{#if !yourSlots.length && !yourTemporarySlots.length}
 		<p class="dark:text-white">{$_('page.dashboard.no_times_chosen')}</p>
