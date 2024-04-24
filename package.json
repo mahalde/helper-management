@@ -38,13 +38,13 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@floating-ui/dom": "^1.6.3",
+		"@floating-ui/dom": "^1.2.3",
 		"@supabase/auth-helpers-sveltekit": "^0.9.0",
 		"@supabase/supabase-js": "^2.10.0",
 		"@vercel/analytics": "^0.1.11",
-		"date-fns": "^2.30.0",
+		"date-fns": "^2.29.3",
 		"svelte-i18n": "^3.6.0",
 		"xlsx": "https://cdn.sheetjs.com/xlsx-0.19.2/xlsx-0.19.2.tgz",
-		"zod": "^3.21.4"
+		"zod": "^3.20.6"
 	}
 }
