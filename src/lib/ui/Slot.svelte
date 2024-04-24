@@ -52,7 +52,10 @@
 			return false;
 		}
 
-		return isContact || (slot.additional_fields.length > 0 && !alreadyHelper);
+		return (
+			$page.data.permissions.includes(PERMISSIONS.SLOT_CREATE) ||
+			(slot.additional_fields.length > 0 && !alreadyHelper)
+		);
 	}
 
 	let additionalHelperInfoModal: ModalType | undefined;
@@ -228,7 +231,7 @@
 				{#if needsAdditionalInformation()}
 					<Modal bind:modal={additionalFieldsModal}>
 						<div class="p-4 space-y-4 flex flex-col">
-							{#if isContact}
+							{#if $page.data.permissions.includes(PERMISSIONS.SLOT_CREATE)}
 								<p class="unstyled text-xl mb-2">{$_('label.additional_helper')}</p>
 								<p>{$_('component.slot.additional_helper')}</p>
 								<label class="label">
