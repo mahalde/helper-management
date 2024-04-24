@@ -2,11 +2,15 @@
 	import { dev } from '$app/environment';
 	import { notifications } from '$lib/stores';
 	import Alert from '$lib/ui/Alert.svelte';
+	import { arrow, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
+	import { storePopup } from '@skeletonlabs/skeleton';
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import { inject } from '@vercel/analytics';
 	import { fly } from 'svelte/transition';
 	import '../app.css';
 	import '../theme.css';
+
+	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
 	inject({ mode: dev ? 'development' : 'production' });
 </script>

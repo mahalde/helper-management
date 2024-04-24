@@ -15,6 +15,7 @@
 	import Modal from './Modal.svelte';
 	import {
 		catering,
+		document_check,
 		document_duplicate,
 		dressage,
 		exclamation_triangle,
@@ -166,6 +167,10 @@
 			<a class="btn btn-sm variant-ringed-secondary" href="/edit-temporary-slot/{slot.id}">
 				<Icon icon={pencil_square} viewBoxHeight={24} viewBoxWidth={24} />
 				<span>{$_('label.edit')}</span>
+			</a>
+			<a class="btn btn-sm variant-ringed-secondary" href="/convert-temporary-slot/{slot.id}">
+				<Icon icon={document_check} viewBoxHeight={24} viewBoxWidth={24} />
+				<span>{$_('label.convert')}</span>
 			</a>
 		{/if}
 		<form

@@ -28,7 +28,8 @@ export const TemporaryHelper = Helper.extend({
 	openings: z.array(
 		z.object({
 			id: z.string(),
-			name: z.string()
+			name: z.string(),
+			selected_on: z.date().optional()
 		})
 	)
 });

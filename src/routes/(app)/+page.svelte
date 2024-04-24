@@ -87,7 +87,6 @@
 				.map((record) => Object.values(record))
 				.flat(2)
 				.filter((slot) => slot.helpers.some((helper) => helper.id === data.session?.user.id));
-			console.log(yourTemporarySlots);
 		}
 	}
 

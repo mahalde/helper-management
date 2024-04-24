@@ -21,11 +21,15 @@ export const load: PageLoad = async ({ parent, depends }) => {
 		temporary: false as const
 	}));
 
+	const { data: rawTempIds } = await supabase.from('slots').select('temp_slot_id');
+
+	const tempIds = rawTempIds?.map((slot) => slot.temp_slot_id) ?? [];
+
 	const { data: rawTemporarySlots } = await supabase
 		.from('temporary_slots_with_openings')
 		.select('*')
 		.gte('date', new Date().toISOString());
-	const temporarySlots: TemporarySlot[] | undefined = rawTemporarySlots?.map((slot) => ({
+	let temporarySlots: TemporarySlot[] | undefined = rawTemporarySlots?.map((slot) => ({
 		...slot,
 		temporary: true,
 		date: new Date(slot.date)
@@ -58,6 +62,8 @@ export const load: PageLoad = async ({ parent, depends }) => {
 			temporarySlots[i].helpers = helpers?.[i];
 		}
 	}
+
+	temporarySlots = temporarySlots?.filter((slot) => !tempIds.includes(slot.id));
 
 	slots?.sort((slotA, slotB) => slotA.start_time.getTime() - slotB.start_time.getTime());
 	temporarySlots?.sort((slotA, slotB) => {
