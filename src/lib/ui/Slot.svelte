@@ -79,15 +79,13 @@
 
 	let expiredSlotModal: ModalType | undefined;
 	function slotExpired() {
-		return false;
 		if ($page.data.permissions.includes(PERMISSIONS.SLOT_CREATE)) {
 			return false;
 		}
 
 		return (
-			slot.category === 'dressage' ||
-			(isBefore(slot.start_time, new Date(2023, 4, 2)) &&
-				(alreadyHelper || !slot.max_helpers || slot.helpers.length < slot.max_helpers))
+			isBefore(slot.start_time, new Date(2024, 4, 9)) &&
+			(alreadyHelper || !slot.max_helpers || slot.helpers.length < slot.max_helpers)
 		);
 	}
 
