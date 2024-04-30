@@ -4,7 +4,8 @@
 		type Modal as ModalType,
 		type Slot,
 		type SortOption,
-		TemporarySlot
+		TemporarySlot,
+		TemporaryTimeslot
 	} from '$lib/types';
 	import Icon from '$lib/ui/Icon.svelte';
 	import { adjustments_horizontal, funnel } from '$lib/ui/icons';
@@ -22,6 +23,7 @@
 
 	let yourSlots: Slot[] = [];
 	let yourTemporarySlots: TemporarySlot[] = [];
+	let filteredTemporarySlots: Record<string, Record<TemporaryTimeslot, TemporarySlot[]>> = {};
 	let filteredSlots: Slot[] = [];
 
 	const slotMetadata = {
@@ -75,6 +77,16 @@
 			slotMetadata.names.add(slot.name);
 		});
 
+		Object.entries(data.temporarySlots ?? {}).forEach(([date, slots]) => {
+			slotMetadata.dates.add(date.split('T')[0]);
+			Object.values(slots).forEach((timeslots) => {
+				timeslots.forEach((slot) => {
+					slotMetadata.categories.add(slot.category);
+					slotMetadata.names.add(slot.name);
+				});
+			});
+		});
+
 		slotMetadata.names = new Set([...slotMetadata.names].sort());
 
 		yourSlots =
@@ -105,6 +117,31 @@
 					filters.categories.has(slot.category) &&
 					filters.names.has(slot.name)
 			) ?? [];
+
+		const tempSlotsFilteredByDate = Object.fromEntries(
+			Object.entries(data.temporarySlots ?? {}).filter(([date]) =>
+				filters.dates.has(date.split('T')[0])
+			)
+		);
+		Object.entries(tempSlotsFilteredByDate).forEach(([date, slots]) => {
+			tempSlotsFilteredByDate[date] = Object.fromEntries(
+				Object.entries(slots).map(([timeslot, timeslots]) => [
+					timeslot,
+					timeslots.filter((slot) => filters.categories.has(slot.category))
+				])
+			) as Record<TemporaryTimeslot, TemporarySlot[]>;
+		});
+
+		let totalLength = Object.values(tempSlotsFilteredByDate).reduce(
+			(acc, slots) => acc + Object.values(slots).reduce((acc, slots) => acc + slots.length, 0),
+			0
+		);
+
+		if (totalLength === 0) {
+			filteredTemporarySlots = {};
+		} else {
+			filteredTemporarySlots = tempSlotsFilteredByDate;
+		}
 	}
 
 	let filterModal: ModalType;
@@ -196,9 +233,9 @@
 			</div>
 		{/if}
 	</div>
-	{#if data.temporarySlots && Object.keys(data.temporarySlots).length !== 0}
+	{#if filteredTemporarySlots && Object.keys(filteredTemporarySlots).length !== 0}
 		<h1 class="mt-8 mb-4 text-center">Vorläufige Arbeitszeiten</h1>
-		<TemporarySlotDisplay slots={data.temporarySlots} />
+		<TemporarySlotDisplay slots={filteredTemporarySlots} />
 	{/if}
 	{#if filteredSlots?.length || !data.temporarySlots || Object.keys(data.temporarySlots).length}
 		<h1 class="mt-8 mb-4 text-center">Feste Arbeitszeiten</h1>
