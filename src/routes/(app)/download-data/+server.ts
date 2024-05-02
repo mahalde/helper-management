@@ -29,7 +29,8 @@ export async function GET({ locals: { supabase, getSession } }) {
 	const { data: slots, error: dbError } = await supabase
 		.from('slots_for_organizers')
 		.select<'*', SlotForOrganizer>('*')
-		.contains('contacts', [userId]);
+		.contains('contacts', [userId])
+		.gte('start_time', '2024-04-01');
 
 	if (dbError) {
 		console.error(dbError);
@@ -41,7 +42,7 @@ export async function GET({ locals: { supabase, getSession } }) {
 		start_time: new Date(slot.start_time),
 		end_time: new Date(slot.end_time),
 		helpers: slot.helpers.map((helper) => {
-			const additional_data = helper.additional_field_data.map((data) => ({
+			const additional_data = (helper.additional_field_data ?? []).map((data) => ({
 				name: slot.additional_fields.find((field) => field.id === data.key)?.name ?? '',
 				value: data.value
 			}));
@@ -58,12 +59,17 @@ export async function GET({ locals: { supabase, getSession } }) {
 	const wb = XLSX.utils.book_new();
 
 	if (slotMap.size === 0) {
-		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['Keine Zeitslots, bei denen du als Ansprechpartner hinterlegt bist']]));
+		XLSX.utils.book_append_sheet(
+			wb,
+			XLSX.utils.aoa_to_sheet([
+				['Keine Zeitslots, bei denen du als Ansprechpartner hinterlegt bist']
+			])
+		);
 	}
 
 	for (const [date, slots] of slotMap) {
 		const slotsForDisplay = formatSlotsForDisplay(slots);
-		const colInfo: XLSX.ColInfo[] = []
+		const colInfo: XLSX.ColInfo[] = [];
 		for (let i = 0; i < slotsForDisplay[0].length; i++) {
 			const width = slotsForDisplay.reduce((acc, row) => Math.max(row[i]?.length ?? 0, acc), 0);
 			colInfo.push({ wch: width });
@@ -77,7 +83,7 @@ export async function GET({ locals: { supabase, getSession } }) {
 	return new Response(wbout, {
 		headers: {
 			'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-			'Content-Disposition': 'attachment; filename="Zeitslots.xlsx"'
+			'Content-Disposition': `attachment; filename="Zeitslots_${new Date().getFullYear()}.xlsx"`
 		}
 	});
 }
@@ -132,7 +138,13 @@ function formatSlotsForDisplay(slots: FormattedSlot[]): string[][] {
 function formatSlotRow(slot: FormattedSlot): string[] {
 	const timeRange = timeFormatter.formatRange(slot.start_time, slot.end_time);
 	const helper = slot.helpers[0];
-	return [slot.name, timeRange, helper?.name, helper?.phone, formatAdditionalData(helper?.additional_data[0])];
+	return [
+		slot.name,
+		timeRange,
+		helper?.name,
+		helper?.phone,
+		formatAdditionalData(helper?.additional_data[0])
+	];
 }
 
 function formatHelperRow(helper: Helper, skipFirstRow?: boolean): string[][] {
