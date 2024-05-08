@@ -3,7 +3,7 @@
 	import { invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { notifications } from '$lib/stores';
-	import { PERMISSIONS, type Modal as ModalType, type Slot, type SlotCategory } from '$lib/types';
+	import { PERMISSIONS, SlotCategory, type Modal as ModalType, type Slot } from '$lib/types';
 	import { getDateFormatter, getTimeFormatter } from '$lib/utils';
 	import { isBefore, isSameDay } from 'date-fns';
 	import { locale, _ } from 'svelte-i18n';
@@ -84,7 +84,7 @@
 		}
 
 		return (
-			isBefore(slot.start_time, new Date(2024, 4, 9)) &&
+			slot.category === 'catering' &&
 			(alreadyHelper || !slot.max_helpers || slot.helpers.length < slot.max_helpers)
 		);
 	}
