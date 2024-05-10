@@ -103,8 +103,8 @@
 			"no_times": "Keine Zeiten vorhanden",
 			"no_times_chosen": "Keine Zeiten ausgewählt",
 			"preview_modal": {
-				"header": "Vorläufige Zeiteinteilung",
-				"paragraph_1": "Viele der angezeigten Helferdienste befinden sich zurzeit in einem vorläufigen Modus. Dabei wird jeder vorläufige Helferdienst selbst gekennzeichnet. Für diese sind auch nur Zeiträume inklusive der in diesem Zeitraum stattfindenden Helferdienste sichtbar. Du kannst dich dabei in die Dienste eintragen, die du gerne übernehmen möchtest. ",
+				"header": "Arbeitszeiten für die Dressur",
+				"paragraph_1": "Die Arbeitszeiten für die Dressur wurden in den WhatsApp Gruppen geteilt. Dort sind die gültigen Zeiten vermerkt. Für weitere Informationen meldet euch bitte bei den zuständigen Personen:",
 				"paragraph_2": "Es kann allerdings sein, dass mehr Personen eingetragen sind, als letzendlich benötigt werden. In diesem Fall werden die Helfer gewählt, die sich zuerst eingetragen haben.",
 				"paragraph_3": "Wenn die Zeiteinteilung vorliegt, wirst du den Möglichkeiten nach in deine gewünschte Prüfung eingetragen und erhälst auch eine Benachrichtung, ob das geklappt oder nicht. Ab dem Zeitpunkt kannst du dich dann auch nach Belieben in diesem oder anderen Helferdiensten eintragen oder austragen.",
 				"button": "Verstanden!"

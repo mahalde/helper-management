@@ -285,8 +285,10 @@
 	<div class="p-4 space-y-4 flex flex-col">
 		<h2>{$_('page.dashboard.preview_modal.header')}</h2>
 		<p>{$_('page.dashboard.preview_modal.paragraph_1')}</p>
-		<p>{$_('page.dashboard.preview_modal.paragraph_2')}</p>
-		<p>{$_('page.dashboard.preview_modal.paragraph_3')}</p>
+		<ul>
+			<li>Nadine Willms (<a href="tel:+491624974588">0162 4974588</a>)</li>
+			<li>Britta Willms (<a href="tel:+4915751888900">01575 1888900</a>)</li>
+		</ul>
 		<button type="button" class="btn variant-filled-primary" on:click={previewModal.hide}>
 			{$_('page.dashboard.preview_modal.button')}
 		</button>

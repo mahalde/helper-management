@@ -91,5 +91,5 @@ export const load: PageLoad = async ({ parent, depends }) => {
 		return all;
 	}, {} as Record<string, Record<TemporaryTimeslot, TemporarySlot[]>>);
 
-	return { slots, temporarySlots: sortedTemporarySlots, permissions };
+	return { slots, temporarySlots: undefined, permissions };
 };
