@@ -79,14 +79,7 @@
 
 	let expiredSlotModal: ModalType | undefined;
 	function slotExpired() {
-		if ($page.data.permissions.includes(PERMISSIONS.SLOT_CREATE)) {
-			return false;
-		}
-
-		return (
-			slot.category === 'catering' &&
-			(alreadyHelper || !slot.max_helpers || slot.helpers.length < slot.max_helpers)
-		);
+		return true;
 	}
 
 	let loading = false;

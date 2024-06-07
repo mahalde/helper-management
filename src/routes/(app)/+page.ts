@@ -10,10 +10,7 @@ export const load: PageLoad = async ({ parent, depends }) => {
 		throw redirect(303, '/auth');
 	}
 
-	const { data: rawSlots } = await supabase
-		.from('slots_with_helpers')
-		.select<'*', Slot>('*')
-		.gte('start_time', new Date().toISOString());
+	const { data: rawSlots } = await supabase.from('slots_with_helpers').select<'*', Slot>('*');
 	const slots = rawSlots?.map((slot) => ({
 		...slot,
 		start_time: new Date(slot.start_time),
@@ -27,8 +24,7 @@ export const load: PageLoad = async ({ parent, depends }) => {
 
 	const { data: rawTemporarySlots } = await supabase
 		.from('temporary_slots_with_openings')
-		.select('*')
-		.gte('date', new Date().toISOString());
+		.select('*');
 	let temporarySlots: TemporarySlot[] | undefined = rawTemporarySlots?.map((slot) => ({
 		...slot,
 		temporary: true,

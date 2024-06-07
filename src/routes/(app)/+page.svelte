@@ -169,11 +169,6 @@
 	}
 
 	let previewModal: ModalType;
-
-	onMount(() => {
-		if ($page.url.searchParams.get('popup') === 'false') return;
-		previewModal.show();
-	});
 </script>
 
 <div class="my-4 w-fit mx-2 md:mx-auto">
@@ -199,7 +194,7 @@
 	{#if !yourSlots.length && !yourTemporarySlots.length}
 		<p class="dark:text-white">{$_('page.dashboard.no_times_chosen')}</p>
 	{/if}
-	<hr class="my-12" />
+	<!-- <hr class="my-12" />
 	<div class="mb-2 flex flex-col sm:flex-row justify-between sm:items-center gap-4 sm:gap-24">
 		<h4 class="dark:text-gray-200 uppercase tracking-wide text-gray-500">
 			{$_('page.dashboard.all_times')}
@@ -242,7 +237,7 @@
 		<SlotDisplay slots={filteredSlots} sortOption={selectedSortOption} />
 	{:else}
 		<p class="dark:text-white">{$_('page.dashboard.no_times')}</p>
-	{/if}
+	{/if} -->
 </div>
 
 <Modal bind:modal={filterModal}>
